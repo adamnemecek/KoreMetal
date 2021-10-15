@@ -2,28 +2,30 @@ import Metal
 
 @propertyWrapper
 public class GPUUniform<Element> {
-    let buffer: MTLBuffer
-    let memAlign: MemAlign<Element>
-    var ptr: UnsafePointer<Element>
+    private let buffer: MTLBuffer
+    private let memAlign: MemAlign<Element>
+    private var ptr: UnsafeMutablePointer<Element>
 
     public init?(device: MTLDevice,
                 value: Element,
                 options: MTLResourceOptions = []) {
         let memAlign = MemAlign<Element>(capacity: 1)
         guard let buffer = device.makeBuffer(memAlign: memAlign, options: options) else { return nil }
+
         self.buffer = buffer
         self.ptr = buffer.bindUniformMemory()
         self.memAlign = memAlign
+
+        self.wrappedValue = value
     }
 
     public var wrappedValue: Element {
         get {
-            fatalError()
+            self.ptr.pointee
         }
         set {
-            fatalError()
+            self.ptr.pointee = newValue
         }
-
     }
 
     @inline(__always)
@@ -44,6 +46,11 @@ public class GPUUniform<Element> {
     @inline(__always)
     var device: MTLDevice {
         self.buffer.device
+    }
+
+
+    deinit {
+        self.buffer.setPurgeableState(.empty)
     }
 
 }

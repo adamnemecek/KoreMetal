@@ -291,9 +291,9 @@ extension MTLBuffer {
         return .init(start: start, count: capacity)
     }
 
-    func bindUniformMemory<Element>() -> UnsafePointer<Element> {
+    func bindUniformMemory<Element>() -> UnsafeMutablePointer<Element> {
         let start = self.contents().bindMemory(to: Element.self, capacity: 1)
-        return UnsafePointer(start)
+        return UnsafeMutablePointer(start)
     }
 }
 
