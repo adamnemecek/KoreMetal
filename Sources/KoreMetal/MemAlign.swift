@@ -1,13 +1,13 @@
 // based on ngrid14/gpuvec.rs
 //// pub(crate)
-//pub fn round_up(x: usize, to: usize) -> usize {
+// pub fn round_up(x: usize, to: usize) -> usize {
 //    let m = x % to;
 //    if m == 0 {
 //        x
 //    } else {
 //        x - m + to
 //    }
-//}
+// }
 //
 
 func roundUp(x: Int, to: Int) -> Int {
@@ -20,9 +20,9 @@ func roundUp(x: Int, to: Int) -> Int {
 }
 
 //// pub(crate)
-//pub fn page_aligned(size: usize) -> usize {
+// pub fn page_aligned(size: usize) -> usize {
 //    round_up(size, 4096)
-//}
+// }
 
 func pageAligned(x: Int) -> Int {
     roundUp(x: x, to: 4096)
@@ -31,13 +31,13 @@ func pageAligned(x: Int) -> Int {
 /////
 ///// `MemAlign` represents metadata for a page alligned allocation.
 /////
-//#[derive(PartialEq, Eq, Debug, Copy, Clone)]
-//pub struct MemAlign<T> {
+// #[derive(PartialEq, Eq, Debug, Copy, Clone)]
+// pub struct MemAlign<T> {
 //    byte_size: usize,
 //    capacity: usize,
 //    remainder: usize,
 //    phantom: std::marker::PhantomData<T>,
-//}
+// }
 
 public struct MemAlign<T> {
     let byteSize: Int
@@ -46,7 +46,6 @@ public struct MemAlign<T> {
 }
 
 extension MemAlign {
-
 
     public static var elementSize: Int {
         MemoryLayout<T>.size
@@ -87,7 +86,7 @@ extension MemAlign {
     }
 }
 //
-//impl<T> MemAlign<T> {
+// impl<T> MemAlign<T> {
 //    pub fn element_size() -> usize {
 //        std::mem::size_of::<T>()
 //    }
@@ -128,11 +127,11 @@ extension MemAlign {
 //            phantom: Default::default(),
 //        }
 //    }
-//}
+// }
 //
 //
-//#[test]
-//fn test_roundup() {
+// #[test]
+// fn test_roundup() {
 //    // assert!(round_up(0, 4096) == 4096);
 //    // println!("{}", round_up(0, 4096));
 //    assert!(round_up(1, 4096) == 4096);
@@ -140,12 +139,11 @@ extension MemAlign {
 //    assert!(round_up(4096, 4096) == 4096);
 //    assert!(round_up(4097, 4096) == 2 * 4096);
 //    assert!(round_up(2 * 4096 + 1, 4096) == 3 * 4096);
-//}
-
+// }
 
 //
-//#[test]
-//fn test_paged_alloc() {
+// #[test]
+// fn test_paged_alloc() {
 //    #[repr(C)]
 //    struct TestStruct {
 //        data: [u8; 18],
@@ -162,5 +160,4 @@ extension MemAlign {
 //    // println!("{}", alloc.is_valid());
 //
 //    // dbg!("{}", alloc);
-//}
-
+// }

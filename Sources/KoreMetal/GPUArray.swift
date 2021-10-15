@@ -1,6 +1,6 @@
 import Metal
 
-public final class GPUArray<Element> : Collection {
+public final class GPUArray<Element>: Collection {
     public typealias Index = Int
 
     // how many are actually in used
@@ -23,11 +23,11 @@ public final class GPUArray<Element> : Collection {
         self.raw.memAlign.capacity
     }
 
-    public var startIndex : Index {
+    public var startIndex: Index {
         return 0
     }
 
-    public var endIndex : Index {
+    public var endIndex: Index {
         return count
     }
 
@@ -96,7 +96,7 @@ public final class GPUArray<Element> : Collection {
 
     }
 
-    public func append<S>(contentsOf newElements: S) where Element == S.Element, S : Sequence {
+    public func append<S>(contentsOf newElements: S) where Element == S.Element, S: Sequence {
         let underestimatedCount = newElements.underestimatedCount
 
         fatalError()
@@ -184,8 +184,7 @@ public final class GPUArray<Element> : Collection {
     }
 }
 
-
-//extension GPUArray : Sequence {
+// extension GPUArray : Sequence {
 //
 //
 //
@@ -198,19 +197,18 @@ public final class GPUArray<Element> : Collection {
 //        }
 //    }
 //
-//}
+// }
 //
-//extension GPUArray : Collection {
+// extension GPUArray : Collection {
 //
-//}
-
+// }
 
 // not aware of count and such just capacity
 struct RawGPUArray<Element> {
     typealias Index = Int
 
     fileprivate var memAlign: MemAlign<Element>
-    fileprivate var buffer : MTLBuffer
+    fileprivate var buffer: MTLBuffer
     fileprivate var ptr: UnsafeMutableBufferPointer<Element>
 
     init?(device: MTLDevice,
@@ -278,8 +276,6 @@ struct RawGPUArray<Element> {
     }
 }
 
-
-
 extension UnsafeMutableBufferPointer {
     func copyMemory(from: Self, count: Int) {
         guard let to = self.baseAddress else { fatalError("to was nil") }
@@ -301,10 +297,8 @@ extension MTLBuffer {
     }
 }
 
-
 extension MTLDevice {
     func makeBuffer<T>(memAlign: MemAlign<T>, options: MTLResourceOptions = []) -> MTLBuffer? {
         self.makeBuffer(length: memAlign.byteSize, options: options)
     }
 }
-

@@ -48,7 +48,7 @@ public class GPUUniform<Element> {
 
 }
 
-extension GPUUniform where Element : Equatable {
+extension GPUUniform where Element: Equatable {
     public static func ==(lhs: GPUUniform, rhs: GPUUniform) -> Bool {
         fatalError()
     }
