@@ -226,9 +226,9 @@ struct RawGPUArray<Element> {
         }
     }
 
-//    private var id: Int {
-//        self.buffer.hash
-//    }
+    //    private var id: Int {
+    //        self.buffer.hash
+    //    }
 
     func `deinit`() {
         self.buffer.setPurgeableState(.empty)

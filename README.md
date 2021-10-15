@@ -1,3 +1,3 @@
 # KoreMetal
 
-A description of this package.
+`GPUArray` which is a wrapper around `MTLBuffer`.
