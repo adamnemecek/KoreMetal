@@ -1,4 +1,4 @@
-import MetalKit
+import Metal
 
 public final class GPUArray<Element> : Collection {
     public typealias Index = Int
@@ -7,9 +7,13 @@ public final class GPUArray<Element> : Collection {
     public fileprivate(set) var count: Int
     fileprivate var raw: RawGPUArray<Element>
 
-    public init?(device: MTLDevice, capacity: Int) {
+    public init?(device: MTLDevice,
+                 capacity: Int,
+                 options: MTLResourceOptions = []) {
         let memAlign = MemAlign<Element>(capacity: capacity)
-        guard let raw = RawGPUArray<Element>(device: device, memAlign: memAlign) else { return nil }
+        guard let raw = RawGPUArray<Element>(device: device,
+                                             memAlign: memAlign,
+                                             options: options) else { return nil }
 
         self.count = 0
         self.raw = raw
@@ -289,6 +293,11 @@ extension MTLBuffer {
     func bindMemory<Element>(capacity: Int) -> UnsafeMutableBufferPointer<Element> {
         let start = self.contents().bindMemory(to: Element.self, capacity: capacity)
         return .init(start: start, count: capacity)
+    }
+
+    func bindUniformMemory<Element>() -> UnsafePointer<Element> {
+        let start = self.contents().bindMemory(to: Element.self, capacity: 1)
+        return UnsafePointer(start)
     }
 }
 
