@@ -95,10 +95,13 @@ public final class GPUArray<Element> : Collection {
     public func append<S>(contentsOf newElements: S) where Element == S.Element, S : Sequence {
         let underestimatedCount = newElements.underestimatedCount
 
-
+        fatalError()
         //        a.append(contentsOf: [10])
     }
 
+    func validate() -> Bool {
+        self.raw.validate()
+    }
 
     //    public func replaceSubrange<C: Collection>(_ subrange: Range<Index>, with newElements: C) where C.Iterator.Element == Element {
     //        /// adapted from https://github.com/apple/swift/blob/ea2f64cad218bb64a79afee41b77fe7bfc96cfd2/stdlib/public/core/ArrayBufferProtocol.swift#L140
@@ -224,6 +227,10 @@ struct RawGPUArray<Element> {
         set {
             self.ptr[index] = newValue
         }
+    }
+
+    func validate() -> Bool {
+        self.buffer.length == self.memAlign.byteSize
     }
 
     //    private var id: Int {

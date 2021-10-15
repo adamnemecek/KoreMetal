@@ -34,6 +34,11 @@ class GPUArrayTest: XCTestCase {
         XCTAssert(a[1] == 20)
         XCTAssert(a[2] == 30)
 
+        XCTAssert(a.count == 3)
+        XCTAssert(a.capacity == 1024)
+//        XCTAssert(MemoryLayout<Int>.size == 8)
+//        let z = a.byteLength()
+        XCTAssert(a.validate())
     }
 
     func testPerformanceExample() throws {
