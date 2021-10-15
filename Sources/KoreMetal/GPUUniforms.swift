@@ -1,8 +1,8 @@
 import Metal
 
 @propertyWrapper
-public class GPUUniform<Element> {
-    private let buffer: MTLBuffer
+public class GPUUniforms<Element> {
+    fileprivate let buffer: MTLBuffer
     private let memAlign: MemAlign<Element>
     private var ptr: UnsafeMutablePointer<Element>
 
@@ -55,8 +55,19 @@ public class GPUUniform<Element> {
 
 }
 
-extension GPUUniform where Element: Equatable {
-    public static func ==(lhs: GPUUniform, rhs: GPUUniform) -> Bool {
-        fatalError()
+extension GPUUniforms where Element: Equatable {
+    public static func ==(lhs: GPUUniforms, rhs: GPUUniforms) -> Bool {
+        lhs.wrappedValue == rhs.wrappedValue
+    }
+}
+
+
+extension MTLRenderCommandEncoder {
+    public func setVertexUniforms<Element>(_ uniforms: GPUUniforms<Element>, index: Int) {
+        self.setVertexBuffer(uniforms.buffer, offset: 0, index: index)
+    }
+
+    public func setFragmentUniforms<Element>(_ uniforms: GPUUniforms<Element>, index: Int) {
+        self.setFragmentBuffer(uniforms.buffer, offset: 0, index: index)
     }
 }
