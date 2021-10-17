@@ -2,6 +2,12 @@ import XCTest
 import MetalKit
 @testable import KoreMetal
 
+extension Sequence where Element == Int {
+    func sum() -> Element {
+        self.reduce(0, +)
+    }
+}
+
 class GPUArrayTest: XCTestCase {
 
     override func setUpWithError() throws {
@@ -39,6 +45,25 @@ class GPUArrayTest: XCTestCase {
 //        XCTAssert(MemoryLayout<Int>.size == 8)
 //        let z = a.byteLength()
         XCTAssert(a.validate())
+
+        let z = Array(a)
+
+        XCTAssert(z == [10, 20, 30])
+    }
+
+    func testAppendMultiple() {
+        let device = MTLCreateSystemDefaultDevice()!
+//        let device = MTLCreateSystemDefaultDevice()!
+        let v = Array(0..<4098)
+//
+        guard var a = GPUArray<Int>(device: device, capacity: 1) else { fatalError() }
+        a.append(contentsOf: v)
+        print(a.count)
+        XCTAssert(v.count == a.count)
+        XCTAssertEqual(v.sum(),  a.sum())
+//
+
+        
     }
 
     func testPerformanceExample() throws {
