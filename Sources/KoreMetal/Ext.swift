@@ -11,4 +11,12 @@ extension MTLRenderCommandEncoder {
         var value = value
         self.setFragmentBytes(&value, length: MemoryLayout<T>.size, index: index)
     }
+
+    public func setVertexArray<Element>(array: GPUArray<Element>, offset: Int, index: Int) {
+        self.setVertexBuffer(array.raw.buffer, offset: offset, index: index)
+    }
+
+    public func setFragmentArray<Element>(array: GPUArray<Element>, offset: Int, index: Int) {
+        self.setFragmentBuffer(array.raw.buffer, offset: offset, index: index)
+    }
 }

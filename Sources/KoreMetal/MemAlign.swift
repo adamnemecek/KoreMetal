@@ -67,6 +67,11 @@ extension MemAlign {
 //        self.remainder = remainder
 //    }
 
+
+//    public init(byteSize: Int) {
+//
+//    }
+
     public init(capacity: Int) {
         let elementSize = Self.elementSize
         let size = elementSize * capacity

@@ -5,7 +5,7 @@ public final class GPUArray<Element>: Collection {
 
     // how many are actually in used
     public fileprivate(set) var count: Int
-    fileprivate var raw: RawGPUArray<Element>
+    internal fileprivate(set) var raw: RawGPUArray<Element>
 
     public init?(device: MTLDevice,
                  capacity: Int,
@@ -17,6 +17,13 @@ public final class GPUArray<Element>: Collection {
 
         self.count = 0
         self.raw = raw
+    }
+
+    ///
+    /// takes the ownership of a buffer
+    ///
+    public init(buffer: MTLBuffer) {
+        fatalError()
     }
 
     public var capacity: Int {
@@ -58,7 +65,7 @@ public final class GPUArray<Element>: Collection {
     }
 
     func reserveCapacity(_ minimumCapacity: Int) {
-        if minimumCapacity < self.capacity {
+        if minimumCapacity <= self.capacity {
             return
         }
 
@@ -233,8 +240,13 @@ struct RawGPUArray<Element> {
     typealias Index = Int
 
     fileprivate var memAlign: MemAlign<Element>
-    fileprivate var buffer: MTLBuffer
+    internal private(set) var buffer: MTLBuffer
     fileprivate var ptr: UnsafeMutableBufferPointer<Element>
+
+
+    init(buffer: MTLBuffer) {
+        fatalError()
+    }
 
     init?(device: MTLDevice,
           memAlign: MemAlign<Element>,
