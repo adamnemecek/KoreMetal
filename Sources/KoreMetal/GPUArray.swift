@@ -64,7 +64,7 @@ public final class GPUArray<Element>: Collection {
         self.raw.device
     }
 
-    func reserveCapacity(_ minimumCapacity: Int) {
+    public func reserveCapacity(_ minimumCapacity: Int) {
         if minimumCapacity <= self.capacity {
             return
         }
@@ -76,8 +76,9 @@ public final class GPUArray<Element>: Collection {
                                     options: self.raw.resourceOptions) else { fatalError() }
         new.label = self.label
         new.copyMemory(from: self.raw, count: self.count)
-
+        let old = self.raw
         self.raw = new
+        old.deinit()
     }
 
     public func removeAll() {
@@ -104,23 +105,16 @@ public final class GPUArray<Element>: Collection {
     }
 
     public func append<S>(contentsOf newElements: S) where Element == S.Element, S: Sequence {
-        let underestimatedCount = newElements.underestimatedCount
-        self.reserveCapacity(self.count + underestimatedCount)
+        self.reserveCapacity(self.count + newElements.underestimatedCount)
 
         for e in newElements {
-            self.raw[self.count] = e
-            self.count += 1
+            self.append(e)
         }
-
-        //        fatalError()
-        //        a.append(contentsOf: [10])
     }
 
     func validate() -> Bool {
         self.raw.validate()
     }
-
-    
 
     //    public func replaceSubrange<C: Collection>(_ subrange: Range<Index>, with newElements: C) where C.Iterator.Element == Element {
     //        /// adapted from https://github.com/apple/swift/blob/ea2f64cad218bb64a79afee41b77fe7bfc96cfd2/stdlib/public/core/ArrayBufferProtocol.swift#L140
@@ -204,15 +198,16 @@ extension GPUArray: Sequence {
         let count = self.count
         var index = 0
         return AnyIterator {
-            if index < count {
+            guard index < count else { return nil }
 
-                let e = self[index]
-                index += 1
-                return e
-            } else {
-                return nil
-            }
+            let e = self[index]
+            index += 1
+            return e
         }
+    }
+
+    public var underestimatedCount: Int {
+        self.count
     }
 }
 
