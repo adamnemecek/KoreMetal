@@ -95,13 +95,9 @@ public final class GPUArray<Element>: Collection {
     }
 
     public func append(_ newElement: Element) {
-        reserveCapacity(self.count + 1)
-        //        var a = [10]
-        //        a.append(10)
-
+        self.reserveCapacity(self.count + 1)
         self.raw[self.count] = newElement
-        count += 1
-
+        self.count += 1
     }
 
     public func append<S>(contentsOf newElements: S) where Element == S.Element, S: Sequence {
