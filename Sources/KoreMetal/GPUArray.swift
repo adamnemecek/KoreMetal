@@ -1,6 +1,6 @@
 import Metal
 
-public final class GPUArray<Element>: Collection {
+public final class GPUArray<Element>: MutableCollection {
     public typealias Index = Int
 
     // how many are actually in used
@@ -302,7 +302,7 @@ struct RawGPUArray<Element> {
     func copyMemory(from: RawGPUArray<Element>, count: Int) {
         self.ptr.copyMemory(from: from.ptr, count: count)
         // todo do i need this?
-        self.buffer.didModifyRange(0..<count)
+//        self.buffer.didModifyRange(0..<count)
     }
 }
 
