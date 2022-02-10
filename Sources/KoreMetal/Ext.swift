@@ -20,3 +20,9 @@ extension MTLRenderCommandEncoder {
         self.setFragmentBuffer(array.raw.buffer, offset: offset, index: index)
     }
 }
+
+extension MTLComputeCommandEncoder {
+    public func setArray<Element>(_ array: GPUArray<Element>, offset: Int, index: Int) {
+        self.setBuffer(array.raw.buffer, offset: offset, index: index)
+    }
+}
