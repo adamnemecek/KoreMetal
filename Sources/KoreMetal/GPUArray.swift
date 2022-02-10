@@ -210,7 +210,6 @@ extension GPUArray: CustomStringConvertible where Element: CustomStringConvertib
 }
 
 extension GPUArray: BidirectionalCollection {
-
     @inline(__always)
     public func index(before i: Index) -> Index {
         return i - 1
@@ -233,6 +232,10 @@ extension GPUArray: Sequence {
     public var underestimatedCount: Int {
         self.count
     }
+}
+
+extension GPUArray: RandomAccessCollection {
+
 }
 
 extension GPUArray: RangeReplaceableCollection {
@@ -349,13 +352,14 @@ struct RawGPUArray<Element> {
     internal private(set) var buffer: MTLBuffer
     fileprivate var ptr: UnsafeMutableBufferPointer<Element>
 
-    init(buffer: MTLBuffer) {
-        fatalError()
-    }
+//    init(buffer: MTLBuffer) {
+//        fatalError()
+//    }
 
     init?(device: MTLDevice,
           memAlign: MemAlign<Element>,
-          options: MTLResourceOptions = []) {
+          options: MTLResourceOptions = []
+    ) {
         guard let buffer = device.makeBuffer(memAlign: memAlign, options: options) else { return nil }
 
         self.memAlign = memAlign

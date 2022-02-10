@@ -80,6 +80,15 @@ class GPUArrayTest: XCTestCase {
         XCTAssert(a.elementsEqual([1, 2, 3, 30]))
     }
 
+    func testSort() {
+        let device = MTLCreateSystemDefaultDevice()!
+
+        guard var a = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
+        a.append(contentsOf: [20, 10, 30, 5])
+        a.sort()
+        XCTAssert(a.elementsEqual([5, 10, 20, 30]))
+    }
+
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {
