@@ -73,9 +73,12 @@ public final class GPUArray<Element>: MutableCollection {
 
         let memAlign = MemAlign<Element>(capacity: minimumCapacity)
 
-        guard var new = RawGPUArray(device: self.device,
-                                    memAlign: memAlign,
-                                    options: self.raw.resourceOptions) else { fatalError() }
+        guard var new = RawGPUArray(
+            device: self.device,
+            memAlign: memAlign,
+            options: self.raw.resourceOptions
+        ) else { fatalError() }
+
         new.label = self.label
         new.copyMemory(from: self.raw, count: self.count)
         let old = self.raw
@@ -419,7 +422,7 @@ struct RawGPUArray<Element> {
     @inline(__always)
     func copyMemory(from: RawGPUArray<Element>, count: Int) {
         self.ptr.copyMemory(from: from.ptr, count: count)
-        // todo do i need this?
+        // todo: do i need this?
         //        self.buffer.didModifyRange(0..<count)
     }
 }
