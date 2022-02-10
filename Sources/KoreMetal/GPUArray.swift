@@ -55,10 +55,7 @@ public final class GPUArray<Element>: MutableCollection {
         }
     }
 
-    @inline(__always)
-    public func index(before i: Index) -> Index {
-        return i - 1
-    }
+
 
     @inline(__always)
     public func index(after i: Index) -> Index {
@@ -209,6 +206,14 @@ extension GPUArray: CustomStringConvertible where Element: CustomStringConvertib
     public var description: String {
         let inner = self.map { $0.description }.joined(separator: ", ")
         return "GPUArray<\(Element.self)>(\(inner))"
+    }
+}
+
+extension GPUArray: BidirectionalCollection {
+
+    @inline(__always)
+    public func index(before i: Index) -> Index {
+        return i - 1
     }
 }
 

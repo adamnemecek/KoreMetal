@@ -77,7 +77,7 @@ class GPUArrayTest: XCTestCase {
 
         a.replaceSubrange(0..<2, with: [1,2,3,4])
 
-        print(a)
+        XCTAssert(a.elementsEqual([1, 2, 3, 30]))
     }
 
     func testPerformanceExample() throws {
