@@ -67,7 +67,6 @@ extension MemAlign {
 //        self.remainder = remainder
 //    }
 
-
 //    public init(byteSize: Int) {
 //
 //    }

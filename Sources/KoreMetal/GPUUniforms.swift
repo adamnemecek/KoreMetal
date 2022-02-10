@@ -48,7 +48,6 @@ public class GPUUniforms<Element> {
         self.buffer.device
     }
 
-
     deinit {
         self.buffer.setPurgeableState(.empty)
     }
@@ -60,7 +59,6 @@ extension GPUUniforms where Element: Equatable {
         lhs.wrappedValue == rhs.wrappedValue
     }
 }
-
 
 extension MTLRenderCommandEncoder {
     public func setVertexUniforms<Element>(_ uniforms: GPUUniforms<Element>, index: Int) {

@@ -19,12 +19,12 @@ class GPUArrayTest: XCTestCase {
     }
     
     func testAppend() throws {
-        
+
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let device = MTLCreateSystemDefaultDevice()!
-        
+
         guard let a = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
         a.append(10)
         a.append(20)
@@ -33,6 +33,9 @@ class GPUArrayTest: XCTestCase {
         XCTAssert(a[0] == 10)
         XCTAssert(a[1] == 20)
         XCTAssert(a[2] == 30)
+
+        XCTAssert(a.first == 10)
+        XCTAssert(a.last == 30)
         
         a.reserveCapacity(1000)
         
@@ -45,9 +48,9 @@ class GPUArrayTest: XCTestCase {
         //        XCTAssert(MemoryLayout<Int>.size == 8)
         //        let z = a.byteLength()
         XCTAssert(a.validate())
-        
+
         let z = Array(a)
-        
+
         XCTAssert(z == [10, 20, 30])
     }
     
@@ -62,10 +65,21 @@ class GPUArrayTest: XCTestCase {
         XCTAssert(v.count == a.count)
         XCTAssertEqual(v.sum(),  a.sum())
         //
-        
-        
     }
-    
+
+    func testRangeReplace() {
+        let device = MTLCreateSystemDefaultDevice()!
+
+        guard let a = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
+        a.append(10)
+        a.append(20)
+        a.append(30)
+
+        a.replaceSubrange(0..<2, with: [1,2,3,4])
+
+        print(a)
+    }
+
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {
