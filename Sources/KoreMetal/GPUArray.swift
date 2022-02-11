@@ -241,22 +241,30 @@ extension GPUArray: RandomAccessCollection {
 
 }
 
+
+//let eraseCount = subrange.count
+//let insertCount = newElements.count
+//let growth = insertCount - eraseCount
+//
+//_reserveCapacityImpl(minimumCapacity: self.count + growth,
+//                    growForAppend: true)
+//_buffer.replaceSubrange(subrange, with: insertCount, elementsOf: newElements)
+
 extension GPUArray: RangeReplaceableCollection {
     public func replaceSubrange<C>(
         _ subrange: Range<Int>,
         with newElements: C
     ) where C : Collection, Element == C.Element {
-
-        //        public func replaceSubrange<C>(
-        //            _ subrange: Range<Int>,
-        //            with newCount: Int,
-        //            elementsOf newValues: C
-        //        ) where C : Collection, C.Element == Element {
-        let newCount = Swift.min(self.count - subrange.count + newElements.count, self.count)
-        self.reserveCapacity(newCount)
-        //        _sanityCheck(startIndex == 0, "_SliceBuffer should override this function.")
-        let oldCount = self.count
         let eraseCount = subrange.count
+        let insertCount = newElements.count
+        let growth1 = insertCount - eraseCount
+
+        //        let newCount = Swift.min(self.count - subrange.count + newElements.count, self.count)
+        self.reserveCapacity(self.count + growth1)
+        //        _sanityCheck(startIndex == 0, "_SliceBuffer should override this function.")
+        let newCount = newElements.count
+        let oldCount = self.count
+        //        let eraseCount = subrange.count
 
         let growth = newCount - eraseCount
         self.count = oldCount + growth
@@ -355,9 +363,9 @@ struct RawGPUArray<Element> {
     internal private(set) var buffer: MTLBuffer
     fileprivate var ptr: UnsafeMutableBufferPointer<Element>
 
-//    init(buffer: MTLBuffer) {
-//        fatalError()
-//    }
+    //    init(buffer: MTLBuffer) {
+    //        fatalError()
+    //    }
 
     init?(device: MTLDevice,
           memAlign: MemAlign<Element>,
