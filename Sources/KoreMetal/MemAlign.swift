@@ -40,8 +40,11 @@ func pageAligned(x: Int) -> Int {
 // }
 
 public struct MemAlign<T> {
+    // the total byte size
     let byteSize: Int
+    // how many elements of T are there
     let capacity: Int
+    // remaining bytes
     let remainder: Int
 }
 

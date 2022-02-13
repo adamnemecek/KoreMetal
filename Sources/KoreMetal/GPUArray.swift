@@ -359,9 +359,9 @@ extension GPUArray: RangeReplaceableCollection {
 struct RawGPUArray<Element> {
     typealias Index = Int
 
-    fileprivate var memAlign: MemAlign<Element>
+    internal private(set) var memAlign: MemAlign<Element>
     internal private(set) var buffer: MTLBuffer
-    fileprivate var ptr: UnsafeMutableBufferPointer<Element>
+    internal fileprivate(set) var ptr: UnsafeMutableBufferPointer<Element>
 
     //    init(buffer: MTLBuffer) {
     //        fatalError()

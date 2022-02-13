@@ -89,6 +89,25 @@ class GPUArrayTest: XCTestCase {
         XCTAssert(a.elementsEqual([5, 10, 20, 30]))
     }
 
+    func testBoolArray() {
+        let device = MTLCreateSystemDefaultDevice()!
+
+        guard var a = GPUArray<Bool>(device: device, capacity: 16) else { fatalError() }
+
+        a.append(contentsOf: repeatElement(false, count: 16))
+
+        a[5] = true
+        a[10] = true
+        a[15] = true
+
+//        for e in a.enumerated() {
+//            print(e)
+//        }
+        for e in a.iterSetBits() {
+            print(e)
+        }
+    }
+
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {
