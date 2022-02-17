@@ -1,6 +1,8 @@
 import Metal
 
+//
 // not aware of count and such just capacity
+//
 struct RawGPUArray<Element> {
     typealias Index = Int
 

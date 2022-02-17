@@ -19,6 +19,14 @@ extension MTLRenderCommandEncoder {
     public func setFragmentArray<Element>(_ array: GPUArray<Element>, offset: Int, index: Int) {
         self.setFragmentBuffer(array.raw.buffer, offset: offset, index: index)
     }
+
+    public func setVertexUniforms<Element>(_ uniforms: GPUUniforms<Element>, index: Int) {
+        self.setVertexBuffer(uniforms.buffer, offset: 0, index: index)
+    }
+
+    public func setFragmentUniforms<Element>(_ uniforms: GPUUniforms<Element>, index: Int) {
+        self.setFragmentBuffer(uniforms.buffer, offset: 0, index: index)
+    }
 }
 
 extension MTLComputeCommandEncoder {
