@@ -1,4 +1,3 @@
-
 extension GPUArray where Element == Bool {
     public func iterSetBits() -> AnyIterator<Int> {
         self.raw.iterSetBits()
@@ -25,7 +24,9 @@ extension RawGPUArray where Element == Bool {
                 currentBlock = ptr.advanced(by: i).pointee
                 i += 1
                 leading += blockSize
+                guard i < capacity else { return nil }
             }
+
             return leading + currentBlock.leadingZeroBitCount
 
         }
