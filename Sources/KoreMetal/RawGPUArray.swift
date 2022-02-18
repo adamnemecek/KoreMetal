@@ -73,6 +73,17 @@ struct RawGPUArray<Element> {
     var capacity: Int {
         self.memAlign.capacity
     }
+//
+//    /// returns the new count of things
+//    /// [1,2,3,4,5]
+    public mutating func removeAll(
+        count: Int,
+        where shouldBeRemoved: (Element) throws -> Bool
+    ) rethrows -> Int {
+        try self.ptr[0..<count].halfStablePartition(
+            isSuffixElement: shouldBeRemoved
+        )
+    }
 
     @inline(__always)
     func copyMemory(from: RawGPUArray<Element>, count: Int) {

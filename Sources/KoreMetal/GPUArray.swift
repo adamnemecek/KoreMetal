@@ -90,6 +90,15 @@ public final class GPUArray<Element>: MutableCollection {
         self.count = 0
     }
 
+    public func removeAll2(
+        where shouldBeRemoved: (Element) throws -> Bool
+    ) rethrows {
+        self.count = try self.raw.removeAll(
+            count: count,
+            where: shouldBeRemoved
+        )
+    }
+
     public var label: String? {
         get {
             self.raw.label
@@ -126,7 +135,6 @@ public final class GPUArray<Element>: MutableCollection {
     func validate() -> Bool {
         self.raw.validate()
     }
-
 
     //    public func replaceSubrange<C: Collection>(_ subrange: Range<Index>, with newElements: C) where C.Iterator.Element == Element {
     //        /// adapted from https://github.com/apple/swift/blob/ea2f64cad218bb64a79afee41b77fe7bfc96cfd2/stdlib/public/core/ArrayBufferProtocol.swift#L140

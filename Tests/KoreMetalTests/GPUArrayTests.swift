@@ -89,6 +89,25 @@ class GPUArrayTest: XCTestCase {
         XCTAssert(a.elementsEqual([5, 10, 20, 30]))
     }
 
+//    func testRemoveAll() {
+//        let device = MTLCreateSystemDefaultDevice()!
+//
+//        guard var a = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
+//        a.append(contentsOf: [1,2,3,4,5])
+//
+//        var b = [1,2,3,4,5]
+//        let z = b.partition { $0 > 3}
+//        print(b, z)
+////        print()
+//
+////        a.removeAll { $0 < 3 }
+////        print(a.count)
+//
+////        for e in a {
+////            print("here ", e)
+////        }
+//    }
+
     func testBoolArray() {
         let device = MTLCreateSystemDefaultDevice()!
 
