@@ -24,6 +24,18 @@ public final class GPUArray<Element>: MutableCollection {
         self.init(device: device, capacity: 16)!
     }
 
+    var resourceOptions: MTLResourceOptions {
+        self.raw.resourceOptions
+    }
+
+    public func clone() -> Self {
+        Self(
+            device: self.device,
+            capacity: self.capacity,
+            options: self.resourceOptions
+        )!
+    }
+
     ///
     /// takes the ownership of a buffer
     ///
@@ -90,11 +102,11 @@ public final class GPUArray<Element>: MutableCollection {
         self.count = 0
     }
 
-    public func removeAll2(
+    public func removeAll(
         where shouldBeRemoved: (Element) throws -> Bool
     ) rethrows {
         self.count = try self.raw.removeAll(
-            count: count,
+            count: self.count,
             where: shouldBeRemoved
         )
     }
