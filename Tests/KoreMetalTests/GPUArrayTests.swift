@@ -94,23 +94,12 @@ class GPUArrayTest: XCTestCase {
 
         guard var a = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
         a.removeAll { $0 > 3 }
-
         XCTAssert(a.count == 0)
-        a.append(contentsOf: [2,1,3,6,5,4])
-
-//        var b = [1,2,3,4,5]
-
-//        print(b, z)
-        //        print()
+        a.append(contentsOf: [2, 1, 3, 6, 5, 4])
 
         a.removeAll { $0 > 3 }
         XCTAssert(a.count == 3)
-//        print(a)
-        //        print(a.count)
-
-        for e in a {
-            print("here ", e)
-        }
+        XCTAssert(a.elementsEqual([2, 1, 3]))
     }
 
     func testBoolArray() {
