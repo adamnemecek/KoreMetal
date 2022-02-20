@@ -1,10 +1,19 @@
 import Metal
 
+extension UnsafeMutableBufferPointer : Identifiable {
+    public var id: Int {
+        Int(bitPattern: self.baseAddress)
+    }
+}
 //
 // not aware of count and such just capacity
 //
-struct RawGPUArray<Element> {
+struct RawGPUArray<Element> : Identifiable {
     typealias Index = Int
+
+    var id: Int {
+        self.ptr.id
+    }
 
     internal private(set) var memAlign: MemAlign<Element>
     internal private(set) var buffer: MTLBuffer
@@ -23,6 +32,18 @@ struct RawGPUArray<Element> {
         self.memAlign = memAlign
         self.buffer = buffer
         self.ptr = buffer.bindMemory(capacity: memAlign.capacity)
+    }
+
+    init?(
+        device: MTLDevice,
+        capacity: Int,
+        options: MTLResourceOptions = []) {
+        let memAlign = MemAlign<Element>(capacity: capacity)
+        self.init(
+            device: device,
+            memAlign: memAlign,
+            options: options
+        )
     }
 
     @inline(__always)

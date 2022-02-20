@@ -1,7 +1,12 @@
 import Metal
 
-public final class GPUArray<Element>: MutableCollection {
+public final class GPUArray<Element>: MutableCollection, Identifiable {
     public typealias Index = Int
+
+
+    public var id: Int {
+        self.raw.id
+    }
 
     // how many are actually in used
     public fileprivate(set) var count: Int
@@ -10,10 +15,10 @@ public final class GPUArray<Element>: MutableCollection {
     public init?(device: MTLDevice,
                  capacity: Int,
                  options: MTLResourceOptions = []) {
-        let memAlign = MemAlign<Element>(capacity: capacity)
         guard let raw = RawGPUArray<Element>(device: device,
-                                             memAlign: memAlign,
-                                             options: options) else { return nil }
+                                             capacity: capacity,
+                                             options: options)
+        else { return nil }
 
         self.count = 0
         self.raw = raw
@@ -66,8 +71,6 @@ public final class GPUArray<Element>: MutableCollection {
             self.raw.ptr[index] = newValue
         }
     }
-
-
 
     @inline(__always)
     public func index(after i: Index) -> Index {
