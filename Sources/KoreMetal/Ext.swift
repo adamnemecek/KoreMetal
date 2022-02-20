@@ -5,6 +5,15 @@ public protocol MTLBufferRepresentable {
 }
 
 
+extension Identifiable {
+    // didIdChange
+    public func observeID( _ t: (Self) -> Void) -> Bool {
+        let id = self.id
+        t(self)
+        return id != self.id
+    }
+}
+
 extension MutableCollection {
     @inlinable
     public mutating func halfStablePartition(

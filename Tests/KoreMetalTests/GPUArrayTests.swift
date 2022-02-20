@@ -57,11 +57,17 @@ class GPUArrayTest: XCTestCase {
     func testAppendMultiple() {
         let device = MTLCreateSystemDefaultDevice()!
         //        let device = MTLCreateSystemDefaultDevice()!
-        let v = Array(0..<4098)
+        let v = Array(0..<10000)
         //
         guard var a = GPUArray<Int>(device: device, capacity: 1) else { fatalError() }
-        a.append(contentsOf: v)
-        print(a.count)
+//        print(a.id)
+        let idChanged = a.observeID {
+            $0.append(contentsOf: v)
+        }
+
+//        print(a.id)
+        print(idChanged)
+//        print(a.count)
         XCTAssert(v.count == a.count)
         XCTAssertEqual(v.sum(),  a.sum())
         //

@@ -19,10 +19,6 @@ struct RawGPUArray<Element> : Identifiable {
     internal private(set) var buffer: MTLBuffer
     internal fileprivate(set) var ptr: UnsafeMutableBufferPointer<Element>
 
-    //    init(buffer: MTLBuffer) {
-    //        fatalError()
-    //    }
-
     init?(device: MTLDevice,
           memAlign: MemAlign<Element>,
           options: MTLResourceOptions = []
@@ -110,6 +106,6 @@ struct RawGPUArray<Element> : Identifiable {
     func copyMemory(from: RawGPUArray<Element>, count: Int) {
         self.ptr.copyMemory(from: from.ptr, count: count)
         // todo: do i need this?
-        //        self.buffer.didModifyRange(0..<count)
+        // self.buffer.didModifyRange(0..<count)
     }
 }
