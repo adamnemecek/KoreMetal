@@ -226,6 +226,20 @@ public final class GPUArray<Element>: MutableCollection, Identifiable {
     deinit {
         self.raw.deinit()
     }
+
+    @inline(__always)
+    public func withUnsafeBufferPointer<R>(
+        _ body: (UnsafeBufferPointer<Element>
+    ) throws -> R) rethrows -> R {
+        try self.raw.withUnsafeBufferPointer(body)
+    }
+
+    @inline(__always)
+    public func withUnsafeMutableBufferPointer<R>(
+        _ body: (UnsafeMutableBufferPointer<Element>
+    ) throws -> R) rethrows -> R {
+        try self.raw.withUnsafeMutableBufferPointer(body)
+    }
 }
 
 extension GPUArray: CustomStringConvertible where Element: CustomStringConvertible {

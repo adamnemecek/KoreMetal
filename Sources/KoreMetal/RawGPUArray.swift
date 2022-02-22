@@ -108,4 +108,25 @@ struct RawGPUArray<Element> : Identifiable {
         // todo: do i need this?
         // self.buffer.didModifyRange(0..<count)
     }
+
+    @inline(__always)
+    public func withUnsafeBufferPointer<R>(
+        _ body: (UnsafeBufferPointer<Element>
+    ) throws -> R) rethrows -> R {
+        try body(UnsafeBufferPointer(self.ptr))
+    }
+
+    @inline(__always)
+    public func withUnsafeMutableBufferPointer<R>(
+        _ body: (UnsafeMutableBufferPointer<Element>
+    ) throws -> R) rethrows -> R {
+        try body(self.ptr)
+    }
+}
+
+
+func test() {
+    var a: ContiguousArray<Int> = [1,2,3,4,5]
+
+//    a.withUnsafeBufferPointer(<#T##body: (UnsafeBufferPointer<Int>) throws -> R##(UnsafeBufferPointer<Int>) throws -> R#>)
 }

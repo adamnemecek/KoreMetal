@@ -32,6 +32,24 @@ extension MutableCollection {
         }
         return i
     }
+//
+//    @inlinable
+//    public mutating func halfStablePartitionIndexed(
+//        isSuffixElement: (Index, Element) throws -> Bool
+//    ) rethrows -> Index {
+//        guard var i = try firstIndex(where: isSuffixElement)
+//        else { return endIndex }
+//
+//        var j = index(after: i)
+//        while j != endIndex {
+//            if try !isSuffixElement(self[j]) {
+//                swapAt(i, j)
+//                formIndex(after: &i)
+//            }
+//            formIndex(after: &j)
+//        }
+//        return i
+//    }
 }
 
 //setFragmentBuffers
