@@ -101,6 +101,10 @@ public final class GPUArray<Element>: MutableCollection, Identifiable {
         old.deinit()
     }
 
+    public func removeAll(keepingCapacity keepCapacity: Bool = false) {
+        self.count = 0
+    }
+
     public func removeAll() {
         self.count = 0
     }
