@@ -103,7 +103,7 @@ struct RawGPUArray<Element>: Identifiable {
 //
 //    /// returns the new count of things
 //    /// [1,2,3,4,5]
-    public mutating func removeAll(
+    mutating func removeAll(
         count: Int,
         where shouldBeRemoved: (Element) throws -> Bool
     ) rethrows -> Int {
@@ -120,14 +120,14 @@ struct RawGPUArray<Element>: Identifiable {
     }
 
     @inline(__always)
-    public func withUnsafeBufferPointer<R>(
+    func withUnsafeBufferPointer<R>(
         _ body: (UnsafeBufferPointer<Element>
     ) throws -> R) rethrows -> R {
         try body(UnsafeBufferPointer(self.ptr))
     }
 
     @inline(__always)
-    public func withUnsafeMutableBufferPointer<R>(
+    func withUnsafeMutableBufferPointer<R>(
         _ body: (UnsafeMutableBufferPointer<Element>
     ) throws -> R) rethrows -> R {
         try body(self.ptr)
