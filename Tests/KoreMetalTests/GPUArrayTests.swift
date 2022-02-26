@@ -128,11 +128,12 @@ class GPUArrayTest: XCTestCase {
     }
 
     func testEq() {
-        let a: GPUArray = [1,2,3,4]
-        let b: GPUArray = [1,2,3,4]
-        let c: GPUArray = [1,2,4]
+        let a = GPUArray([1,2,3,4])
+        let b = GPUArray([1,2,3,4])
+        let c = GPUArray([1,2,4])
 
 
+        print(a != c)
 //        XCTAssert(1 != 10)
     }
 

@@ -159,12 +159,12 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     public var first: Element? {
-        guard !isEmpty else { return nil }
+        guard !self.isEmpty else { return nil }
         return self[0]
     }
 
     public var last: Element? {
-        guard !isEmpty else { return nil }
+        guard !self.isEmpty else { return nil }
         return self[endIndex - 1]
     }
 
@@ -394,26 +394,6 @@ extension GPUArray: RangeReplaceableCollection {
     }
 }
 
-// extension GPUArray : Sequence {
-//
-//
-//
-//
-//    public typealias Element = T
-//
-//    func makeIterator() -> some IteratorProtocol {
-//        AnyIterator {
-//
-//        }
-//    }
-//
-// }
-//
-// extension GPUArray : Collection {
-//
-// }
-
-
 extension UnsafeMutableBufferPointer {
     func copyMemory(from: Self, count: Int) {
         guard let to = self.baseAddress else { fatalError("to was nil") }
@@ -424,16 +404,17 @@ extension UnsafeMutableBufferPointer {
 }
 
 
-
-
-
-extension GPUArray where Element: Equatable {
-    public static func ==(lhs: GPUArray, rhs: GPUArray) -> Bool {
+extension GPUArray: Equatable where Element : Equatable {
+    public static func ==(
+        lhs: GPUArray<Element>,
+        rhs: GPUArray<Element>
+    ) -> Bool {
         guard lhs.count == rhs.count else { return false }
         for i in 0..<lhs.count where lhs[i] != rhs[i] {
             return false
         }
         return true
     }
+
 }
 
