@@ -41,13 +41,20 @@ extension MTLRenderCommandEncoder {
         self.setFragmentBytes(&value, length: MemoryLayout<T>.size, index: index)
     }
 
+    ///
+    /// offset is in elements
+    ///
     @inline(__always)
     public func setVertexArray<Element>(
         _ array: GPUArray<Element>,
         offset: Int,
         index: Int
     ) {
-        self.setVertexBuffer(array.raw.buffer, offset: offset, index: index)
+        self.setVertexBuffer(
+            array.raw.buffer,
+            offset: MemoryLayout<Element>.size * offset,
+            index: index
+        )
     }
 
     @inline(__always)
@@ -56,7 +63,11 @@ extension MTLRenderCommandEncoder {
         offset: Int,
         index: Int
     ) {
-        self.setFragmentBuffer(array.raw.buffer, offset: offset, index: index)
+        self.setFragmentBuffer(
+            array.raw.buffer,
+            offset: MemoryLayout<Element>.size * offset,
+            index: index
+        )
     }
 
     @inline(__always)
@@ -64,7 +75,11 @@ extension MTLRenderCommandEncoder {
         _ uniforms: GPUUniforms<Element>,
         index: Int
     ) {
-        self.setVertexBuffer(uniforms.buffer, offset: 0, index: index)
+        self.setVertexBuffer(
+            uniforms.buffer,
+            offset: 0,
+            index: index
+        )
     }
 
     @inline(__always)
@@ -72,7 +87,11 @@ extension MTLRenderCommandEncoder {
         _ uniforms: GPUUniforms<Element>,
         index: Int
     ) {
-        self.setFragmentBuffer(uniforms.buffer, offset: 0, index: index)
+        self.setFragmentBuffer(
+            uniforms.buffer,
+            offset: 0,
+            index: index
+        )
     }
 }
 
@@ -83,7 +102,11 @@ extension MTLComputeCommandEncoder {
         offset: Int,
         index: Int
     ) {
-        self.setBuffer(array.raw.buffer, offset: offset, index: index)
+        self.setBuffer(
+            array.raw.buffer,
+            offset: MemoryLayout<Element>.size * offset,
+            index: index
+        )
     }
 
     @inline(__always)
@@ -91,6 +114,10 @@ extension MTLComputeCommandEncoder {
         _ uniforms: GPUUniforms<Element>,
         index: Int
     ) {
-        self.setBuffer(uniforms.buffer, offset: 0, index: index)
+        self.setBuffer(
+            uniforms.buffer,
+            offset: 0,
+            index: index
+        )
     }
 }

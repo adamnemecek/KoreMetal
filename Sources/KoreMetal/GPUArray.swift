@@ -278,19 +278,19 @@ extension GPUArray: BidirectionalCollection {
     }
 }
 
-extension GPUArray: Sequence {
-    public func makeIterator() -> AnyIterator<Element> {
-        var i = self.indices.makeIterator()
-
-        return AnyIterator {
-            i.next().map { self[$0] }
-        }
-    }
-
-    public var underestimatedCount: Int {
-        self.count
-    }
-}
+// extension GPUArray: Sequence {
+////    public func makeIterator() -> AnyIterator<Element> {
+////        var i = self.indices.makeIterator()
+////
+////        return AnyIterator {
+////            i.next().map { self[$0] }
+////        }
+////    }
+//
+//    public var underestimatedCount: Int {
+//        self.count
+//    }
+// }
 
 extension GPUArray: RandomAccessCollection {
 

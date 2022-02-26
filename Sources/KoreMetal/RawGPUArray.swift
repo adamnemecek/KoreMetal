@@ -119,6 +119,13 @@ struct RawGPUArray<Element>: Identifiable {
         // self.buffer.didModifyRange(0..<count)
     }
 
+//    @inline(__always)
+//    func compareMemory(_ other: RawGPUArray<Element>, count: Int) {
+//
+//        self.ptr
+//        fatalError()
+//    }
+
     @inline(__always)
     func withUnsafeBufferPointer<R>(
         _ body: (UnsafeBufferPointer<Element>
