@@ -4,6 +4,20 @@ public protocol MTLBufferRepresentable {
     func buffer() -> MTLBuffer
 }
 
+extension Sequence {
+    /// checks if the element is a class
+    @inline(__always)
+    public static var isClass: Bool {
+        Element.self is AnyObject.Type
+    }
+
+    @inline(__always)
+    public static var isStruct: Bool {
+        !isClass
+    }
+}
+
+
 extension Identifiable {
     // didIdChange
     public func observeID( _ t: (Self) -> Void) -> Bool {

@@ -18,6 +18,8 @@ public final class GPUArray<Element>: MutableCollection,
         capacity: Int,
         options: MTLResourceOptions = []
     ) {
+        assert(Self.isStruct)
+
         guard let raw = RawGPUArray<Element>(
             device: device,
             capacity: capacity,
@@ -29,6 +31,7 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     public init() {
+        assert(Self.isStruct)
         guard let raw = RawGPUArray<Element>(capacity: 16, options: []) else {
             fatalError()
         }
@@ -39,6 +42,7 @@ public final class GPUArray<Element>: MutableCollection,
     public init(
         arrayLiteral elements: Element...
     ) {
+        assert(Self.isStruct)
         guard let raw = RawGPUArray<Element>(
             capacity: elements.underestimatedCount,
             options: []

@@ -6,6 +6,7 @@ extension UnsafeMutableBufferPointer: Identifiable {
     }
 }
 
+
 //
 // not aware of count and such just capacity
 //
@@ -14,17 +15,6 @@ struct RawGPUArray<Element>: Identifiable {
 
     var id: Int {
         self.ptr.id
-    }
-
-    /// checks if the element is a class
-    @inline(__always)
-    static var isClass: Bool {
-        Element.self is AnyObject.Type
-    }
-
-    @inline(__always)
-    static var isStruct: Bool {
-        !isClass
     }
 
     internal private(set) var memAlign: MemAlign<Element>
@@ -38,8 +28,6 @@ struct RawGPUArray<Element>: Identifiable {
         capacity: Int,
         options: MTLResourceOptions = []
     ) {
-        assert(Self.isStruct)
-
         let memAlign = MemAlign<Element>(capacity: capacity)
 
         guard let buffer = device.makeBuffer(
