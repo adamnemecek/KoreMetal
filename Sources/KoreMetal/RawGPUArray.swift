@@ -6,7 +6,6 @@ extension UnsafeMutableBufferPointer: Identifiable {
     }
 }
 
-
 //
 // not aware of count and such just capacity
 //
@@ -137,7 +136,7 @@ struct RawGPUArray<Element>: Identifiable {
     }
 }
 
-//extension UnsafeBufferPointer {
+// extension UnsafeBufferPointer {
 //    func compareMemory(_ other: Self) -> Bool {
 //        let z = self[0..<count]
 //        return true
@@ -147,6 +146,4 @@ struct RawGPUArray<Element>: Identifiable {
 //    func compareMemory(_ other: Self, count: Int) -> Bool {
 //        self[0..<count].compareMemory(other[0..<count])
 //    }
-//}
-
-
+// }

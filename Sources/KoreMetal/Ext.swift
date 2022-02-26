@@ -17,7 +17,6 @@ extension Sequence {
     }
 }
 
-
 extension Identifiable {
     // didIdChange
     public func observeID( _ t: (Self) -> Void) -> Bool {
