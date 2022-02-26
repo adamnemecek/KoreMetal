@@ -6,6 +6,7 @@ public final class GPUArray<Element>: MutableCollection,
     public typealias Index = Int
 
 
+
     public var id: Int {
         self.raw.id
     }
@@ -16,7 +17,8 @@ public final class GPUArray<Element>: MutableCollection,
 
     public init?(device: MTLDevice,
                  capacity: Int,
-                 options: MTLResourceOptions = []) {
+                 options: MTLResourceOptions = []
+    ) {
         guard let raw = RawGPUArray<Element>(
             device: device,
             capacity: capacity,
@@ -51,11 +53,12 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     public func clone() -> Self {
-        Self(
-            device: self.device,
-            capacity: self.capacity,
-            options: self.resourceOptions
-        )!
+        fatalError()
+//        Self(
+//            device: self.device,
+//            capacity: self.capacity,
+//            options: self.resourceOptions
+//        )!
     }
 
     ///

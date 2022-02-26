@@ -5,6 +5,7 @@ extension UnsafeMutableBufferPointer : Identifiable {
         Int(bitPattern: self.baseAddress)
     }
 }
+
 //
 // not aware of count and such just capacity
 //
@@ -13,6 +14,17 @@ struct RawGPUArray<Element> : Identifiable {
 
     var id: Int {
         self.ptr.id
+    }
+
+    /// checks if the element is a class
+    @inline(__always)
+    static var isClass: Bool {
+        Element.self is AnyObject.Type
+    }
+
+    @inline(__always)
+    static var isStruct: Bool {
+        !isClass
     }
 
     internal private(set) var memAlign: MemAlign<Element>
@@ -26,6 +38,8 @@ struct RawGPUArray<Element> : Identifiable {
         memAlign: MemAlign<Element>,
         options: MTLResourceOptions = []
     ) {
+        assert(Self.isStruct)
+
         guard let buffer = device.makeBuffer(memAlign: memAlign, options: options) else { return nil }
 
         self.memAlign = memAlign
@@ -36,7 +50,10 @@ struct RawGPUArray<Element> : Identifiable {
     init?(
         device: MTLDevice,
         capacity: Int,
-        options: MTLResourceOptions = []) {
+        options: MTLResourceOptions = []
+    ) {
+        assert(Self.isStruct)
+
         let memAlign = MemAlign<Element>(capacity: capacity)
         self.init(
             device: device,
@@ -125,11 +142,4 @@ struct RawGPUArray<Element> : Identifiable {
     ) throws -> R) rethrows -> R {
         try body(self.ptr)
     }
-}
-
-
-func test() {
-    var a: ContiguousArray<Int> = [1,2,3,4,5]
-
-//    a.withUnsafeBufferPointer(<#T##body: (UnsafeBufferPointer<Int>) throws -> R##(UnsafeBufferPointer<Int>) throws -> R#>)
 }
