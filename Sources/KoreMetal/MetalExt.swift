@@ -1,26 +1,5 @@
 import Metal
 
-extension MTLDevice {
-    @inline(__always)
-    func makeBuffer<T>(memAlign: MemAlign<T>, options: MTLResourceOptions = []) -> MTLBuffer? {
-        self.makeBuffer(length: memAlign.byteSize, options: options)
-    }
-}
-
-extension MTLBuffer {
-    @inline(__always)
-    func bindMemory<Element>(capacity: Int) -> UnsafeMutableBufferPointer<Element> {
-        let start = self.contents().bindMemory(to: Element.self, capacity: capacity)
-        return .init(start: start, count: capacity)
-    }
-
-    @inline(__always)
-    func bindUniformMemory<Element>() -> UnsafeMutablePointer<Element> {
-        let start = self.contents().bindMemory(to: Element.self, capacity: 1)
-        return UnsafeMutablePointer(start)
-    }
-}
-
 extension MTLRenderCommandEncoder {
     // todo: should these be stride as opposed to size?
     @inline(__always)
@@ -29,7 +8,11 @@ extension MTLRenderCommandEncoder {
         index: Int
     ) {
         var value = value
-        self.setVertexBytes(&value, length: MemoryLayout<T>.size, index: index)
+        self.setVertexBytes(
+            &value,
+            length: MemoryLayout<T>.size,
+            index: index
+        )
     }
 
     @inline(__always)
@@ -38,7 +21,11 @@ extension MTLRenderCommandEncoder {
         index: Int
     ) {
         var value = value
-        self.setFragmentBytes(&value, length: MemoryLayout<T>.size, index: index)
+        self.setFragmentBytes(
+            &value,
+            length: MemoryLayout<T>.size,
+            index: index
+        )
     }
 
     ///
@@ -119,5 +106,30 @@ extension MTLComputeCommandEncoder {
             offset: 0,
             index: index
         )
+    }
+}
+
+///
+/// internal
+///
+
+extension MTLDevice {
+    @inline(__always)
+    func makeBuffer<T>(memAlign: MemAlign<T>, options: MTLResourceOptions = []) -> MTLBuffer? {
+        self.makeBuffer(length: memAlign.byteSize, options: options)
+    }
+}
+
+extension MTLBuffer {
+    @inline(__always)
+    func bindMemory<Element>(capacity: Int) -> UnsafeMutableBufferPointer<Element> {
+        let start = self.contents().bindMemory(to: Element.self, capacity: capacity)
+        return .init(start: start, count: capacity)
+    }
+
+    @inline(__always)
+    func bindUniformMemory<Element>() -> UnsafeMutablePointer<Element> {
+        let start = self.contents().bindMemory(to: Element.self, capacity: 1)
+        return UnsafeMutablePointer(start)
     }
 }

@@ -56,9 +56,7 @@ struct RawGPUArray<Element>: Identifiable {
         capacity: Int,
         options: MTLResourceOptions = []
     ) {
-        guard let device = MTLCreateSystemDefaultDevice() else {
-            fatalError("failed to created device")
-        }
+        guard let device = MTLCreateSystemDefaultDevice() else { return nil }
 
         self.init(device: device, capacity: capacity, options: options)
     }
