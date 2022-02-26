@@ -404,6 +404,9 @@ extension GPUArray: RangeReplaceableCollection {
 }
 
 extension UnsafeMutableBufferPointer {
+    ///
+    /// this is ok since `gpuarray` won't contain classes but only `structs`
+    ///
     func copyMemory(from: Self, count: Int) {
         guard let to = self.baseAddress else { fatalError("to was nil") }
         guard let from = from.baseAddress else { fatalError("from was nil") }

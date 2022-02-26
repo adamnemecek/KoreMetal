@@ -17,11 +17,14 @@ struct RawGPUArray<Element> : Identifiable {
 
     internal private(set) var memAlign: MemAlign<Element>
     internal private(set) var buffer: MTLBuffer
+    // we cache the contents pointer since otherwise we'd have to call "contents()"
+    // and invoke the cost of a obj-c dispatch
     internal fileprivate(set) var ptr: UnsafeMutableBufferPointer<Element>
 
-    init?(device: MTLDevice,
-          memAlign: MemAlign<Element>,
-          options: MTLResourceOptions = []
+    init?(
+        device: MTLDevice,
+        memAlign: MemAlign<Element>,
+        options: MTLResourceOptions = []
     ) {
         guard let buffer = device.makeBuffer(memAlign: memAlign, options: options) else { return nil }
 
