@@ -4,11 +4,12 @@ public protocol MTLBufferRepresentable {
     func buffer() -> MTLBuffer
 }
 
+
 extension Sequence {
     /// checks if the element is a class
     @inline(__always)
     public static var isClass: Bool {
-        Element.self is AnyObject.Type
+        TypeKind<Element>.isClass
     }
 
     @inline(__always)
