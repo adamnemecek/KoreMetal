@@ -35,31 +35,18 @@ struct RawGPUArray<Element> : Identifiable {
 
     init?(
         device: MTLDevice,
-        memAlign: MemAlign<Element>,
-        options: MTLResourceOptions = []
-    ) {
-        assert(Self.isStruct)
-
-        guard let buffer = device.makeBuffer(memAlign: memAlign, options: options) else { return nil }
-
-        self.memAlign = memAlign
-        self.buffer = buffer
-        self.ptr = buffer.bindMemory(capacity: memAlign.capacity)
-    }
-
-    init?(
-        device: MTLDevice,
         capacity: Int,
         options: MTLResourceOptions = []
     ) {
         assert(Self.isStruct)
 
         let memAlign = MemAlign<Element>(capacity: capacity)
-        self.init(
-            device: device,
-            memAlign: memAlign,
-            options: options
-        )
+
+        guard let buffer = device.makeBuffer(memAlign: memAlign, options: options) else { return nil }
+
+        self.memAlign = memAlign
+        self.buffer = buffer
+        self.ptr = buffer.bindMemory(capacity: memAlign.capacity)
     }
 
     @inline(__always)

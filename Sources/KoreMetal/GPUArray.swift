@@ -105,12 +105,9 @@ public final class GPUArray<Element>: MutableCollection,
         if minimumCapacity <= self.capacity {
             return
         }
-
-        let memAlign = MemAlign<Element>(capacity: minimumCapacity)
-
-        guard var new = RawGPUArray(
+        guard var new = RawGPUArray<Element>(
             device: self.device,
-            memAlign: memAlign,
+            capacity: minimumCapacity,
             options: self.raw.resourceOptions
         ) else { fatalError() }
 
