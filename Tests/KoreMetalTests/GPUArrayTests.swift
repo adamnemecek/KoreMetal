@@ -133,7 +133,8 @@ class GPUArrayTest: XCTestCase {
         let c = GPUArray([1,2,4])
 
 
-        print(a != c)
+        XCTAssert(a == b)
+        XCTAssert(a != c)
 //        XCTAssert(1 != 10)
     }
 

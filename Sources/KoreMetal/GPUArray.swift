@@ -279,14 +279,10 @@ extension GPUArray: BidirectionalCollection {
 
 extension GPUArray: Sequence {
     public func makeIterator() -> AnyIterator<Element> {
-        let count = self.count
-        var index = 0
-        return AnyIterator {
-            guard index < count else { return nil }
+        var i = self.indices.makeIterator()
 
-            let e = self[index]
-            index += 1
-            return e
+        return AnyIterator {
+            i.next().map { self[$0] }
         }
     }
 
@@ -299,6 +295,19 @@ extension GPUArray: RandomAccessCollection {
 
 }
 
+extension GPUArray: Equatable where Element : Equatable {
+    public static func ==(
+        lhs: GPUArray<Element>,
+        rhs: GPUArray<Element>
+    ) -> Bool {
+        guard lhs.count == rhs.count else { return false }
+        for i in 0..<lhs.count where lhs[i] != rhs[i] {
+            return false
+        }
+        return true
+    }
+
+}
 
 //let eraseCount = subrange.count
 //let insertCount = newElements.count
@@ -403,18 +412,4 @@ extension UnsafeMutableBufferPointer {
     }
 }
 
-
-extension GPUArray: Equatable where Element : Equatable {
-    public static func ==(
-        lhs: GPUArray<Element>,
-        rhs: GPUArray<Element>
-    ) -> Bool {
-        guard lhs.count == rhs.count else { return false }
-        for i in 0..<lhs.count where lhs[i] != rhs[i] {
-            return false
-        }
-        return true
-    }
-
-}
 
