@@ -1,5 +1,3 @@
-
-
 public enum TypeKind<Element>: Equatable, Comparable, Hashable {
     case `struct`
     case `class`
