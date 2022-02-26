@@ -1,6 +1,8 @@
 import Metal
 
-public final class GPUArray<Element>: MutableCollection, Identifiable {
+public final class GPUArray<Element>: MutableCollection,
+                                      Identifiable,
+                                      ExpressibleByArrayLiteral {
     public typealias Index = Int
 
 
@@ -15,10 +17,11 @@ public final class GPUArray<Element>: MutableCollection, Identifiable {
     public init?(device: MTLDevice,
                  capacity: Int,
                  options: MTLResourceOptions = []) {
-        guard let raw = RawGPUArray<Element>(device: device,
-                                             capacity: capacity,
-                                             options: options)
-        else { return nil }
+        guard let raw = RawGPUArray<Element>(
+            device: device,
+            capacity: capacity,
+            options: options
+        ) else { return nil }
 
         self.count = 0
         self.raw = raw
@@ -27,6 +30,20 @@ public final class GPUArray<Element>: MutableCollection, Identifiable {
     public convenience init() {
         guard let device = MTLCreateSystemDefaultDevice() else { fatalError("failed to created device") }
         self.init(device: device, capacity: 16)!
+    }
+
+    public init(arrayLiteral elements: Element...) {
+        guard let device = MTLCreateSystemDefaultDevice() else { fatalError("failed to created device") }
+
+        guard let raw = RawGPUArray<Element>(
+            device: device,
+            capacity: elements.underestimatedCount,
+            options: []
+        ) else { fatalError() }
+
+        self.count = 0
+        self.raw = raw
+        self.append(contentsOf: elements)
     }
 
     var resourceOptions: MTLResourceOptions {
@@ -406,20 +423,17 @@ extension UnsafeMutableBufferPointer {
     }
 }
 
-extension MTLBuffer {
-    func bindMemory<Element>(capacity: Int) -> UnsafeMutableBufferPointer<Element> {
-        let start = self.contents().bindMemory(to: Element.self, capacity: capacity)
-        return .init(start: start, count: capacity)
-    }
 
-    func bindUniformMemory<Element>() -> UnsafeMutablePointer<Element> {
-        let start = self.contents().bindMemory(to: Element.self, capacity: 1)
-        return UnsafeMutablePointer(start)
+
+
+
+extension GPUArray where Element: Equatable {
+    public static func ==(lhs: GPUArray, rhs: GPUArray) -> Bool {
+        guard lhs.count == rhs.count else { return false }
+        for i in 0..<lhs.count where lhs[i] != rhs[i] {
+            return false
+        }
+        return true
     }
 }
 
-extension MTLDevice {
-    func makeBuffer<T>(memAlign: MemAlign<T>, options: MTLResourceOptions = []) -> MTLBuffer? {
-        self.makeBuffer(length: memAlign.byteSize, options: options)
-    }
-}
