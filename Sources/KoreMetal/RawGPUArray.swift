@@ -42,7 +42,10 @@ struct RawGPUArray<Element>: Identifiable {
 
         let memAlign = MemAlign<Element>(capacity: capacity)
 
-        guard let buffer = device.makeBuffer(memAlign: memAlign, options: options) else { return nil }
+        guard let buffer = device.makeBuffer(
+            memAlign: memAlign,
+            options: options
+        ) else { return nil }
 
         self.memAlign = memAlign
         self.buffer = buffer

@@ -21,7 +21,6 @@ extension MTLBuffer {
     }
 }
 
-
 extension MTLRenderCommandEncoder {
     // todo: should these be stride as opposed to size?
     @inline(__always)
