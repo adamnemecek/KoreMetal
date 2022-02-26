@@ -6,17 +6,20 @@ public class GPUUniforms<Element> {
     private let memAlign: MemAlign<Element>
     private var ptr: UnsafeMutablePointer<Element>
 
-    public init?(device: MTLDevice,
-                value: Element,
-                options: MTLResourceOptions = []) {
+    public init?(
+        device: MTLDevice,
+        value: Element,
+        options: MTLResourceOptions = []
+    ) {
         let memAlign = MemAlign<Element>(capacity: 1)
-        guard let buffer = device.makeBuffer(memAlign: memAlign, options: options) else { return nil }
+        guard let buffer = device.makeBuffer(
+            memAlign: memAlign,
+            options: options
+        ) else { return nil }
 
         self.buffer = buffer
         self.ptr = buffer.bindUniformMemory()
         self.memAlign = memAlign
-
-//        self.wrappedValue = value
     }
 
     public var wrappedValue: Element {
@@ -54,7 +57,7 @@ public class GPUUniforms<Element> {
 
 }
 
-extension GPUUniforms where Element: Equatable {
+extension GPUUniforms: Equatable where Element: Equatable {
     public static func ==(lhs: GPUUniforms, rhs: GPUUniforms) -> Bool {
         lhs.wrappedValue == rhs.wrappedValue
     }
