@@ -5,8 +5,6 @@ public final class GPUArray<Element>: MutableCollection,
                                       ExpressibleByArrayLiteral {
     public typealias Index = Int
 
-
-
     public var id: Int {
         self.raw.id
     }
@@ -15,9 +13,10 @@ public final class GPUArray<Element>: MutableCollection,
     public fileprivate(set) var count: Int
     internal fileprivate(set) var raw: RawGPUArray<Element>
 
-    public init?(device: MTLDevice,
-                 capacity: Int,
-                 options: MTLResourceOptions = []
+    public init?(
+        device: MTLDevice,
+        capacity: Int,
+        options: MTLResourceOptions = []
     ) {
         guard let raw = RawGPUArray<Element>(
             device: device,
@@ -34,7 +33,9 @@ public final class GPUArray<Element>: MutableCollection,
         self.init(device: device, capacity: 16)!
     }
 
-    public init(arrayLiteral elements: Element...) {
+    public init(
+        arrayLiteral elements: Element...
+    ) {
         guard let device = MTLCreateSystemDefaultDevice() else { fatalError("failed to created device") }
 
         guard let raw = RawGPUArray<Element>(
@@ -48,7 +49,14 @@ public final class GPUArray<Element>: MutableCollection,
         self.append(contentsOf: elements)
     }
 
-    var resourceOptions: MTLResourceOptions {
+    ///
+    /// takes the ownership of a buffer
+    ///
+//    public init(buffer: MTLBuffer) {
+//        fatalError()
+//    }
+
+    public var resourceOptions: MTLResourceOptions {
         self.raw.resourceOptions
     }
 
@@ -61,15 +69,9 @@ public final class GPUArray<Element>: MutableCollection,
 //        )!
     }
 
-    ///
-    /// takes the ownership of a buffer
-    ///
-    public init(buffer: MTLBuffer) {
-        fatalError()
-    }
 
     public var capacity: Int {
-        self.raw.memAlign.capacity
+        self.raw.capacity
     }
 
     public var startIndex: Index {

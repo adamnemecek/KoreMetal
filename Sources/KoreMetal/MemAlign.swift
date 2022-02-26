@@ -54,7 +54,7 @@ extension MemAlign {
         MemoryLayout<T>.size
     }
 
-    public static var elementString: Int {
+    public static var elementStride: Int {
         MemoryLayout<T>.stride
     }
 
