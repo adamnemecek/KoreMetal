@@ -1,5 +1,3 @@
-
-
 public final class GPUBoolArray {
     var inner: GPUArray<UInt64>
 

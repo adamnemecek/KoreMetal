@@ -1,6 +1,6 @@
 import Metal
 
-extension UnsafeMutableBufferPointer : Identifiable {
+extension UnsafeMutableBufferPointer: Identifiable {
     public var id: Int {
         Int(bitPattern: self.baseAddress)
     }
@@ -9,7 +9,7 @@ extension UnsafeMutableBufferPointer : Identifiable {
 //
 // not aware of count and such just capacity
 //
-struct RawGPUArray<Element> : Identifiable {
+struct RawGPUArray<Element>: Identifiable {
     typealias Index = Int
 
     var id: Int {

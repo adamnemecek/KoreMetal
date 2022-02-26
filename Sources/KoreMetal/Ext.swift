@@ -4,7 +4,6 @@ public protocol MTLBufferRepresentable {
     func buffer() -> MTLBuffer
 }
 
-
 extension Identifiable {
     // didIdChange
     public func observeID( _ t: (Self) -> Void) -> Bool {
@@ -52,8 +51,8 @@ extension MutableCollection {
 //    }
 }
 
-//setFragmentBuffers
-//setVertexBuffers
+// setFragmentBuffers
+// setVertexBuffers
 
 extension Array where Element == MTLBuffer {
     public init(_ array: [MTLBufferRepresentable]) {

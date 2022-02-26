@@ -69,7 +69,6 @@ public final class GPUArray<Element>: MutableCollection,
 //        )!
     }
 
-
     public var capacity: Int {
         self.raw.capacity
     }
@@ -297,7 +296,7 @@ extension GPUArray: RandomAccessCollection {
 
 }
 
-extension GPUArray: Equatable where Element : Equatable {
+extension GPUArray: Equatable where Element: Equatable {
     public static func ==(
         lhs: GPUArray<Element>,
         rhs: GPUArray<Element>
@@ -311,19 +310,19 @@ extension GPUArray: Equatable where Element : Equatable {
 
 }
 
-//let eraseCount = subrange.count
-//let insertCount = newElements.count
-//let growth = insertCount - eraseCount
+// let eraseCount = subrange.count
+// let insertCount = newElements.count
+// let growth = insertCount - eraseCount
 //
-//_reserveCapacityImpl(minimumCapacity: self.count + growth,
+// _reserveCapacityImpl(minimumCapacity: self.count + growth,
 //                    growForAppend: true)
-//_buffer.replaceSubrange(subrange, with: insertCount, elementsOf: newElements)
+// _buffer.replaceSubrange(subrange, with: insertCount, elementsOf: newElements)
 
 extension GPUArray: RangeReplaceableCollection {
     public func replaceSubrange<C>(
         _ subrange: Range<Int>,
         with newElements: C
-    ) where C : Collection, Element == C.Element {
+    ) where C: Collection, Element == C.Element {
         let eraseCount = subrange.count
         let insertCount = newElements.count
         let growth1 = insertCount - eraseCount
@@ -364,8 +363,7 @@ extension GPUArray: RangeReplaceableCollection {
                 newElements.formIndex(after: &i)
             }
             //          _expectEnd(of: newValues, is: i)
-        }
-        else { // We're not growing the buffer
+        } else { // We're not growing the buffer
             // Assign all the new elements into the start of the subrange
             var i = subrange.lowerBound
             var j = newElements.startIndex
@@ -391,8 +389,7 @@ extension GPUArray: RangeReplaceableCollection {
                 // Slide the rest of the tail back
                 oldTailStart.moveInitialize(
                     from: oldTailStart + shrinkage, count: tailCount - shrinkage)
-            }
-            else {                      // Tail fits within erased elements
+            } else {                      // Tail fits within erased elements
                 // Assign over the start of the replaced range with the tail
                 newTailStart.moveAssign(from: oldTailStart, count: tailCount)
 
@@ -416,5 +413,3 @@ extension UnsafeMutableBufferPointer {
         to.assign(from: from, count: count)
     }
 }
-
-
