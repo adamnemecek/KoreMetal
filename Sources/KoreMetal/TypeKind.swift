@@ -19,7 +19,7 @@ extension TypeKind {
     }
 
     public static var isStruct: Bool {
-        !isClass
+        !Self.isClass
     }
 }
 
