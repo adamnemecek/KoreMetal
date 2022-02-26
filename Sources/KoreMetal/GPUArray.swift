@@ -28,18 +28,18 @@ public final class GPUArray<Element>: MutableCollection,
         self.raw = raw
     }
 
-    public convenience init() {
-        guard let device = MTLCreateSystemDefaultDevice() else { fatalError("failed to created device") }
-        self.init(device: device, capacity: 16)!
+    public init() {
+        guard let raw = RawGPUArray<Element>(capacity: 16, options: []) else {
+            fatalError()
+        }
+        self.count = 0
+        self.raw = raw
     }
 
     public init(
         arrayLiteral elements: Element...
     ) {
-        guard let device = MTLCreateSystemDefaultDevice() else { fatalError("failed to created device") }
-
         guard let raw = RawGPUArray<Element>(
-            device: device,
             capacity: elements.underestimatedCount,
             options: []
         ) else { fatalError() }

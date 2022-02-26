@@ -52,6 +52,17 @@ struct RawGPUArray<Element>: Identifiable {
         self.ptr = buffer.bindMemory(capacity: memAlign.capacity)
     }
 
+    init?(
+        capacity: Int,
+        options: MTLResourceOptions = []
+    ) {
+        guard let device = MTLCreateSystemDefaultDevice() else {
+            fatalError("failed to created device")
+        }
+
+        self.init(device: device, capacity: capacity, options: options)
+    }
+
     @inline(__always)
     subscript(index: Index) -> Element {
         get {
@@ -140,3 +151,17 @@ struct RawGPUArray<Element>: Identifiable {
         try body(self.ptr)
     }
 }
+
+//extension UnsafeBufferPointer {
+//    func compareMemory(_ other: Self) -> Bool {
+//        let z = self[0..<count]
+//        return true
+////        memcmp(self.baseAddress, other, MemoryLayout<Element>.size * count) == 0
+//    }
+//
+//    func compareMemory(_ other: Self, count: Int) -> Bool {
+//        self[0..<count].compareMemory(other[0..<count])
+//    }
+//}
+
+
