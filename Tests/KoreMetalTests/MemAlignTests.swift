@@ -12,11 +12,12 @@ class MemAlignTest: XCTestCase {
     }
 
     func testRoundUp() {
-        XCTAssert(roundUp(x: 1, to:4096) == 4096);
-        XCTAssert(roundUp(x: 4095, to:4096) == 4096);
-        XCTAssert(roundUp(x: 4096, to:4096) == 4096);
-        XCTAssert(roundUp(x: 4097, to:4096) == 2 * 4096);
-        XCTAssert(roundUp(x: 2 * 4096 + 1, to:4096) == 3 * 4096);
+
+        XCTAssert(1.roundUp(to: 4096) == 4096)
+        XCTAssert(4095.roundUp(to: 4096) == 4096)
+        XCTAssert(4096.roundUp(to: 4096) == 4096)
+        XCTAssert(4097.roundUp(to: 4096) == 2 * 4096)
+        XCTAssert((2 * 4096 + 1).roundUp(to: 4096) == 3 * 4096)
     }
 
     func testMemAlign() throws {

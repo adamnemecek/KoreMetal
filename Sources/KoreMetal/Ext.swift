@@ -8,13 +8,13 @@ public protocol MTLBufferRepresentable {
 extension Sequence {
     /// checks if the element is a class
     @inline(__always)
-    public static var isClass: Bool {
+    public static var isElementClass: Bool {
         TypeKind<Element>.isClass
     }
 
     @inline(__always)
-    public static var isStruct: Bool {
-        !isClass
+    public static var isElementStruct: Bool {
+        !isElementClass
     }
 }
 

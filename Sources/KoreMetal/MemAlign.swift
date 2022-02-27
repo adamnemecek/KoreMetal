@@ -10,23 +10,27 @@
 // }
 //
 
-func roundUp(x: Int, to: Int) -> Int {
-    let m = x % to
-    if m == 0 {
-        return x
-    } else {
-        return x - m + to
+extension FixedWidthInteger {
+    func roundUp(to: Self) -> Self {
+        let m = self % to
+        if m == 0 {
+            return self
+        } else {
+            return self - m + to
+        }
+    }
+
+    var pageAligned: Self {
+        self.roundUp(to: 4096)
     }
 }
+
 
 //// pub(crate)
 // pub fn page_aligned(size: usize) -> usize {
 //    round_up(size, 4096)
 // }
 
-func pageAligned(x: Int) -> Int {
-    roundUp(x: x, to: 4096)
-}
 
 /////
 ///// `MemAlign` represents metadata for a page alligned allocation.
@@ -78,7 +82,7 @@ extension MemAlign {
         let elementSize = Self.elementSize
         let size = elementSize * capacity
         //
-        let byteSize = pageAligned(x: size)
+        let byteSize = size.pageAligned
         let remainder = byteSize % elementSize
 
         assert((byteSize - remainder) % elementSize == 0)
