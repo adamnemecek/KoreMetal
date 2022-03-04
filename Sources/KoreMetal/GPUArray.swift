@@ -43,6 +43,19 @@ public final class GPUArray<Element>: MutableCollection,
         self.raw = raw
     }
 
+    public init<S>(_ elements: S) where S : Sequence, Element == S.Element {
+        assert(Self.isElementStruct)
+
+        guard let raw = RawGPUArray<Element>(
+            capacity: elements.underestimatedCount,
+            options: []
+        ) else { fatalError() }
+
+        self.count = 0
+        self.raw = raw
+        self.append(contentsOf: elements)
+    }
+
     public init(
         arrayLiteral elements: Element...
     ) {
@@ -418,14 +431,3 @@ extension GPUArray: RangeReplaceableCollection {
     }
 }
 
-extension UnsafeMutableBufferPointer {
-    ///
-    /// this is ok since `gpuarray` won't contain classes but only `structs`
-    ///
-    func copyMemory(from: Self, count: Int) {
-        guard let to = self.baseAddress else { fatalError("to was nil") }
-        guard let from = from.baseAddress else { fatalError("from was nil") }
-
-        to.assign(from: from, count: count)
-    }
-}
