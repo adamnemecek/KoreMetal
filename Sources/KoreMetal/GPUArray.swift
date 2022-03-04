@@ -259,17 +259,24 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     @inline(__always)
+    public func withUnsafeMTLBuffer<R>(
+        _ body: (MTLBuffer) -> R
+    ) -> R {
+        self.raw.withUnsafeMTLBuffer(body)
+    }
+
+    @inline(__always)
     public func withUnsafeBufferPointer<R>(
         _ body: (UnsafeBufferPointer<Element>
     ) throws -> R) rethrows -> R {
-        try self.raw.withUnsafeBufferPointer(body)
+        try self.raw.withUnsafeBufferPointer(body, count: self.count)
     }
 
     @inline(__always)
     public func withUnsafeMutableBufferPointer<R>(
         _ body: (UnsafeMutableBufferPointer<Element>
     ) throws -> R) rethrows -> R {
-        try self.raw.withUnsafeMutableBufferPointer(body)
+        try self.raw.withUnsafeMutableBufferPointer(body, count: self.count)
     }
 }
 

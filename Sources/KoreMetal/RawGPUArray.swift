@@ -121,18 +121,29 @@ struct RawGPUArray<Element>: Identifiable {
 //        fatalError()
 //    }
 
+    func withUnsafeMTLBuffer<R>(
+        _ body: (MTLBuffer) -> R
+    ) -> R {
+        body(self.buffer)
+    }
+
+    ///
+    /// this takes a count since the entirety of the pointer is not valid
+    ///
     @inline(__always)
     func withUnsafeBufferPointer<R>(
-        _ body: (UnsafeBufferPointer<Element>
-    ) throws -> R) rethrows -> R {
-        try body(UnsafeBufferPointer(self.ptr))
+        _ body: (UnsafeBufferPointer<Element>) throws -> R,
+        count: Int
+    ) rethrows -> R {
+        try body(UnsafeBufferPointer(start: self.ptr.baseAddress!, count: count))
     }
 
     @inline(__always)
     func withUnsafeMutableBufferPointer<R>(
-        _ body: (UnsafeMutableBufferPointer<Element>
-    ) throws -> R) rethrows -> R {
-        try body(self.ptr)
+        _ body: (UnsafeMutableBufferPointer<Element>) throws -> R,
+        count: Int
+    ) rethrows -> R {
+        try body(UnsafeMutableBufferPointer(start: self.ptr.baseAddress!, count: count))
     }
 }
 
