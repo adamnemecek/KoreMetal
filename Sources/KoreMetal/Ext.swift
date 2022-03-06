@@ -4,19 +4,19 @@ public protocol MTLBufferRepresentable {
     func buffer() -> MTLBuffer
 }
 
-
-extension Sequence {
-    /// checks if the element is a class
-    @inline(__always)
-    public static var isElementClass: Bool {
-        TypeKind<Element>.isClass
-    }
-
-    @inline(__always)
-    public static var isElementStruct: Bool {
-        !isElementClass
-    }
-}
+//
+//extension Sequence {
+//    /// checks if the element is a class
+//    @inline(__always)
+//    public static var isElementClass: Bool {
+//        TypeKind<Element>.isClass
+//    }
+//
+//    @inline(__always)
+//    public static var isElementStruct: Bool {
+//        !isElementClass
+//    }
+//}
 
 extension Identifiable {
     // didIdChange
@@ -27,24 +27,24 @@ extension Identifiable {
     }
 }
 
-extension MutableCollection {
-    @inlinable
-    public mutating func halfStablePartition(
-        isSuffixElement: (Element) throws -> Bool
-    ) rethrows -> Index {
-        guard var i = try firstIndex(where: isSuffixElement)
-        else { return endIndex }
-
-        var j = index(after: i)
-        while j != endIndex {
-            if try !isSuffixElement(self[j]) {
-                swapAt(i, j)
-                formIndex(after: &i)
-            }
-            formIndex(after: &j)
-        }
-        return i
-    }
+//extension MutableCollection {
+//    @inlinable
+//    public mutating func halfStablePartition(
+//        isSuffixElement: (Element) throws -> Bool
+//    ) rethrows -> Index {
+//        guard var i = try firstIndex(where: isSuffixElement)
+//        else { return endIndex }
+//
+//        var j = index(after: i)
+//        while j != endIndex {
+//            if try !isSuffixElement(self[j]) {
+//                swapAt(i, j)
+//                formIndex(after: &i)
+//            }
+//            formIndex(after: &j)
+//        }
+//        return i
+//    }
 //
 //    @inlinable
 //    public mutating func halfStablePartitionIndexed(
@@ -63,7 +63,7 @@ extension MutableCollection {
 //        }
 //        return i
 //    }
-}
+//}
 
 // setFragmentBuffers
 // setVertexBuffers

@@ -1,4 +1,5 @@
 import Metal
+import Ext
 
 public final class GPUArray<Element>: MutableCollection,
                                       Identifiable,

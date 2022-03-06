@@ -11,15 +11,6 @@ class MemAlignTest: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testRoundUp() {
-
-        XCTAssert(1.roundUp(to: 4096) == 4096)
-        XCTAssert(4095.roundUp(to: 4096) == 4096)
-        XCTAssert(4096.roundUp(to: 4096) == 4096)
-        XCTAssert(4097.roundUp(to: 4096) == 2 * 4096)
-        XCTAssert((2 * 4096 + 1).roundUp(to: 4096) == 3 * 4096)
-    }
-
     func testMemAlign() throws {
 
         // 18 fields
