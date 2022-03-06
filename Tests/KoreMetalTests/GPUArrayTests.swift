@@ -109,22 +109,22 @@ class GPUArrayTest: XCTestCase {
     }
 
     func testBoolArray() {
-        let device = MTLCreateSystemDefaultDevice()!
-
-        guard var a = GPUArray<Bool>(device: device, capacity: 16) else { fatalError() }
-
-        a.append(contentsOf: repeatElement(false, count: 16))
-
-        a[5] = true
-        a[10] = true
-        a[15] = true
-
-//        for e in a.enumerated() {
-//            print(e)
-//        }
-        for e in a.iterSetBits() {
-            print(e)
-        }
+//        let device = MTLCreateSystemDefaultDevice()!
+//
+//        guard var a = GPUArray<Bool>(device: device, capacity: 16) else { fatalError() }
+//
+//        a.append(contentsOf: repeatElement(false, count: 16))
+//
+//        a[5] = true
+//        a[10] = true
+//        a[15] = true
+//
+////        for e in a.enumerated() {
+////            print(e)
+////        }
+////        for e in a.iterSetBits() {
+////            print(e)
+////        }
     }
 
     func testEq() {
