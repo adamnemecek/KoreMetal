@@ -9,21 +9,7 @@
 //    }
 // }
 //
-
-extension FixedWidthInteger {
-    func roundUp(to: Self) -> Self {
-        let m = self % to
-        if m == 0 {
-            return self
-        } else {
-            return self - m + to
-        }
-    }
-
-    var pageAligned: Self {
-        self.roundUp(to: 4096)
-    }
-}
+import Ext
 
 
 //// pub(crate)
