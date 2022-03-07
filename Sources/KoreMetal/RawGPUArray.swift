@@ -9,9 +9,11 @@ extension UnsafeMutableBufferPointer: Identifiable {
 //
 // not aware of count and such just capacity
 //
+@usableFromInline
 struct RawGPUArray<Element>: Identifiable {
     typealias Index = Int
 
+    @usableFromInline
     var id: Int {
         self.ptr.id
     }
