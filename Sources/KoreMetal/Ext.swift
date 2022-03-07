@@ -13,6 +13,18 @@ extension Identifiable {
     }
 }
 
+extension MTLDevice {
+    @inline(__always)
+    public func makeGPUArray<T>(capacity: Int, options: MTLResourceOptions = []) -> GPUArray<T>? {
+        GPUArray(device: self, capacity: capacity, options: options)
+    }
+
+    @inline(__always)
+    public func makeGPUUniforms<T>(value: T, options: MTLResourceOptions) -> GPUUniforms<T>? {
+        GPUUniforms(device: self, value: value, options: options)
+    }
+}
+
 // setFragmentBuffers
 // setVertexBuffers
 
