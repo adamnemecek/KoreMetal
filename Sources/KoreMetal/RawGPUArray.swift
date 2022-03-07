@@ -10,6 +10,7 @@ extension UnsafeMutableBufferPointer: Identifiable {
 // not aware of count and such just capacity
 //
 @usableFromInline
+@frozen
 struct RawGPUArray<Element>: Identifiable {
     typealias Index = Int
 
