@@ -1,6 +1,7 @@
 import Metal
 
 extension UnsafeMutableBufferPointer: Identifiable {
+    @inlinable @inline(__always)
     public var id: Int {
         Int(bitPattern: self.baseAddress)
     }
@@ -14,6 +15,7 @@ extension UnsafeMutableBufferPointer: Identifiable {
 @frozen
 @usableFromInline
 internal struct RawGPUArray<Element>: Identifiable {
+    @usableFromInline
     typealias Index = Int
 
     @usableFromInline
@@ -71,7 +73,7 @@ internal struct RawGPUArray<Element>: Identifiable {
 //    }
 
 
-    @inline(__always)
+    @inline(__always) @inlinable
     subscript(index: Index) -> Element {
         get {
             assert(index < self._memalign.capacity)
@@ -157,7 +159,7 @@ internal struct RawGPUArray<Element>: Identifiable {
     ///
     /// this takes a count since the entirety of the pointer is not valid
     ///
-    @inline(__always)
+    @inlinable @inline(__always)
     func withUnsafeBufferPointer<R>(
         _ body: (UnsafeBufferPointer<Element>) throws -> R,
         count: Int
@@ -165,7 +167,7 @@ internal struct RawGPUArray<Element>: Identifiable {
         try body(UnsafeBufferPointer(start: self._ptr.baseAddress!, count: count))
     }
 
-    @inline(__always)
+    @inlinable @inline(__always)
     func withUnsafeMutableBufferPointer<R>(
         _ body: (UnsafeMutableBufferPointer<Element>) throws -> R,
         count: Int

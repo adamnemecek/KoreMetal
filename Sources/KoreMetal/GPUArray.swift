@@ -218,11 +218,13 @@ public final class GPUArray<Element>: MutableCollection,
         }
     }
 
+    @inlinable @inline(__always)
     public var first: Element? {
         guard !self.isEmpty else { return nil }
         return self[0]
     }
 
+    @inlinable @inline(__always)
     public var last: Element? {
         guard !self.isEmpty else { return nil }
         return self[endIndex - 1]
