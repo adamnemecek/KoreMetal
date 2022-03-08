@@ -1,6 +1,7 @@
 import Metal
 //import Ext
 
+@_fixed_layout
 public final class GPUArray<Element>: MutableCollection,
                                       Identifiable,
                                       ExpressibleByArrayLiteral {
@@ -11,8 +12,21 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     // how many are actually in used
-    public fileprivate(set) var count: Int
-    internal fileprivate(set) var _raw: RawGPUArray<Element>
+    @usableFromInline
+    internal var _count: Int
+
+    @usableFromInline
+    internal var _raw: RawGPUArray<Element>
+
+    @inline(__always)
+    public var isEmpty: Bool {
+        self._count == 0
+    }
+
+    @inline(__always) @inlinable
+    public var count: Int {
+        self._count
+    }
 
     public init?(
         device: MTLDevice,
@@ -27,7 +41,7 @@ public final class GPUArray<Element>: MutableCollection,
             options: options
         ) else { return nil }
 
-        self.count = 0
+        self._count = 0
         self._raw = raw
     }
 
@@ -40,7 +54,7 @@ public final class GPUArray<Element>: MutableCollection,
         ) else {
             fatalError()
         }
-        self.count = 0
+        self._count = 0
         self._raw = raw
     }
 
@@ -52,7 +66,7 @@ public final class GPUArray<Element>: MutableCollection,
             options: []
         ) else { fatalError() }
 
-        self.count = 0
+        self._count = 0
         self._raw = raw
         self.append(contentsOf: elements)
     }
@@ -67,7 +81,7 @@ public final class GPUArray<Element>: MutableCollection,
 //            options: []
 //        ) else { fatalError() }
 //
-//        self.count = 0
+//        self._count = 0
 //        self.raw = raw
 //        self.append(contentsOf: elements)
     }
@@ -82,7 +96,7 @@ public final class GPUArray<Element>: MutableCollection,
             options: []
         ) else { fatalError() }
 
-        self.count = 0
+        self._count = 0
         self._raw = raw
         self.append(contentsOf: elements)
     }
@@ -107,35 +121,39 @@ public final class GPUArray<Element>: MutableCollection,
 //        )!
     }
 
+    @inline(__always) @inlinable
     public var capacity: Int {
         self._raw.capacity
     }
 
+    @inline(__always) @inlinable
     public var startIndex: Index {
         return 0
     }
 
+    @inline(__always) @inlinable
     public var endIndex: Index {
-        return count
+        return self._count
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public subscript(index: Index) -> Element {
         get {
-            assert(index < self.count)
+            assert(index < self._count)
             return self._raw._ptr[index]
         }
         set {
-            assert(index < self.count)
+            assert(index < self._count)
             self._raw._ptr[index] = newValue
         }
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func index(after i: Index) -> Index {
         return i + 1
     }
 
+    @inline(__always) @inlinable
     public var device: MTLDevice {
         self._raw.device
     }
@@ -151,25 +169,25 @@ public final class GPUArray<Element>: MutableCollection,
         ) else { fatalError() }
 
         new.label = self.label
-        new.copyMemory(from: self._raw, count: self.count)
+        new.copyMemory(from: self._raw, count: self._count)
         let old = self._raw
         self._raw = new
         old.deinit()
     }
 
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
-        self.count = 0
+        self._count = 0
     }
 
     public func removeAll() {
-        self.count = 0
+        self._count = 0
     }
 
     public func removeAll(
         where shouldBeRemoved: (Element) throws -> Bool
     ) rethrows {
-        self.count = try self._raw.removeAll(
-            count: self.count,
+        self._count = try self._raw.removeAll(
+            count: self._count,
             where: shouldBeRemoved
         )
     }
@@ -184,13 +202,13 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     public func append(_ newElement: Element) {
-        self.reserveCapacity(self.count + 1)
-        self._raw[self.count] = newElement
-        self.count += 1
+        self.reserveCapacity(self._count + 1)
+        self._raw[self._count] = newElement
+        self._count += 1
     }
 
     public func append<S>(contentsOf newElements: S) where Element == S.Element, S: Sequence {
-        self.reserveCapacity(self.count + newElements.underestimatedCount)
+        self.reserveCapacity(self._count + newElements.underestimatedCount)
 
         for e in newElements {
             self.append(e)
@@ -213,13 +231,13 @@ public final class GPUArray<Element>: MutableCollection,
 
     //    public func replaceSubrange<C: Collection>(_ subrange: Range<Index>, with newElements: C) where C.Iterator.Element == Element {
     //        /// adapted from https://github.com/apple/swift/blob/ea2f64cad218bb64a79afee41b77fe7bfc96cfd2/stdlib/public/core/ArrayBufferProtocol.swift#L140
-    //        let newCount = Int(newElements.count)
+    //        let newCount = Int(newElements._count)
     //
-    //        let oldCount = self.count
-    //        let eraseCount = subrange.count
+    //        let oldCount = self._count
+    //        let eraseCount = subrange._count
     //
     //        let growth = newCount - eraseCount
-    //        self.count = oldCount + growth
+    //        self._count = oldCount + growth
     //
     //        var elements = ptr.baseAddress!
     //        let oldTailIndex = subrange.upperBound
@@ -298,14 +316,14 @@ public final class GPUArray<Element>: MutableCollection,
     public func withUnsafeBufferPointer<R>(
         _ body: (UnsafeBufferPointer<Element>
     ) throws -> R) rethrows -> R {
-        try self._raw.withUnsafeBufferPointer(body, count: self.count)
+        try self._raw.withUnsafeBufferPointer(body, count: self._count)
     }
 
     @inline(__always)
     public func withUnsafeMutableBufferPointer<R>(
         _ body: (UnsafeMutableBufferPointer<Element>
     ) throws -> R) rethrows -> R {
-        try self._raw.withUnsafeMutableBufferPointer(body, count: self.count)
+        try self._raw.withUnsafeMutableBufferPointer(body, count: self._count)
     }
 }
 
@@ -333,7 +351,7 @@ extension GPUArray: BidirectionalCollection {
 ////    }
 //
 //    public var underestimatedCount: Int {
-//        self.count
+//        self._count
 //    }
 // }
 
@@ -346,8 +364,8 @@ extension GPUArray: Equatable where Element: Equatable {
         lhs: GPUArray<Element>,
         rhs: GPUArray<Element>
     ) -> Bool {
-        guard lhs.count == rhs.count else { return false }
-        for i in 0..<lhs.count where lhs[i] != rhs[i] {
+        guard lhs._count == rhs._count else { return false }
+        for i in 0..<lhs._count where lhs[i] != rhs[i] {
             return false
         }
         return true
@@ -355,11 +373,11 @@ extension GPUArray: Equatable where Element: Equatable {
 
 }
 
-// let eraseCount = subrange.count
-// let insertCount = newElements.count
+// let eraseCount = subrange._count
+// let insertCount = newElements._count
 // let growth = insertCount - eraseCount
 //
-// _reserveCapacityImpl(minimumCapacity: self.count + growth,
+// _reserveCapacityImpl(minimumCapacity: self._count + growth,
 //                    growForAppend: true)
 // _buffer.replaceSubrange(subrange, with: insertCount, elementsOf: newElements)
 
@@ -372,15 +390,15 @@ extension GPUArray: RangeReplaceableCollection {
         let insertCount = newElements.count
         let growth1 = insertCount - eraseCount
 
-        //        let newCount = Swift.min(self.count - subrange.count + newElements.count, self.count)
-        self.reserveCapacity(self.count + growth1)
+        //        let newCount = Swift.min(self._count - subrange._count + newElements._count, self._count)
+        self.reserveCapacity(self._count + growth1)
         //        _sanityCheck(startIndex == 0, "_SliceBuffer should override this function.")
         let newCount = newElements.count
-        let oldCount = self.count
-        //        let eraseCount = subrange.count
+        let oldCount = self._count
+        //        let eraseCount = subrange._count
 
         let growth = newCount - eraseCount
-        self.count = oldCount + growth
+        self._count = oldCount + growth
 
         let elements = self._raw._ptr
         let oldTailIndex = subrange.upperBound

@@ -29,12 +29,19 @@ import Ext
 //    phantom: std::marker::PhantomData<T>,
 // }
 
-public struct MemAlign<T> {
+@frozen
+@usableFromInline
+internal struct MemAlign<T> {
     // the total byte size
+    @usableFromInline
     let byteSize: Int
+
     // how many elements of T are there
+    @usableFromInline
     let capacity: Int
+
     // remaining bytes
+    @usableFromInline
     let remainder: Int
 }
 

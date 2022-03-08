@@ -21,11 +21,17 @@ internal struct RawGPUArray<Element>: Identifiable {
         self._ptr.id
     }
 
+    @usableFromInline
     internal var _memalign: MemAlign<Element>
+
     internal var _buffer: MTLBuffer
+
+    @usableFromInline
+    internal var _device: MTLDevice
     // we cache the contents pointer since otherwise we'd have to call "contents()"
     // and invoke the cost of a obj-c dispatch
-    internal fileprivate(set) var _ptr: UnsafeMutableBufferPointer<Element>
+    @usableFromInline
+    internal var _ptr: UnsafeMutableBufferPointer<Element>
 
     init?(
         device: MTLDevice,
@@ -39,6 +45,7 @@ internal struct RawGPUArray<Element>: Identifiable {
             options: options
         ) else { return nil }
 
+        self._device = device
         self._memalign = memAlign
         self._buffer = buffer
         self._ptr = buffer.bindMemory(capacity: memAlign.capacity)
@@ -103,18 +110,20 @@ internal struct RawGPUArray<Element>: Identifiable {
         self._buffer.resourceOptions
     }
 
-    @inline(__always)
+//    @usableFromInline
+    @inline(__always) @inlinable
     var device: MTLDevice {
-        self._buffer.device
+        self._device
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     var capacity: Int {
         self._memalign.capacity
     }
 //
 //    /// returns the new count of things
 //    /// [1,2,3,4,5]
+    @inline(__always) @inlinable
     mutating func removeAll(
         count: Int,
         where shouldBeRemoved: (Element) throws -> Bool
@@ -124,7 +133,7 @@ internal struct RawGPUArray<Element>: Identifiable {
         )
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     func copyMemory(from: RawGPUArray<Element>, count: Int) {
         self._ptr.copyMemory(from: from._ptr, count: count)
         // todo: do i need this?
@@ -180,6 +189,7 @@ extension UnsafeMutableBufferPointer {
     ///
     /// this is ok since `gpuarray` won't contain classes but only `structs`
     ///
+    @inline(__always) @inlinable
     func copyMemory(from: Self, count: Int) {
         guard let to = self.baseAddress else { fatalError("to was nil") }
         guard let from = from.baseAddress else { fatalError("from was nil") }
