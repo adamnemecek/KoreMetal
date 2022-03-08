@@ -175,10 +175,12 @@ public final class GPUArray<Element>: MutableCollection,
         old.deinit()
     }
 
+    @inlinable @inline(__always)
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
         self._count = 0
     }
 
+    @inlinable @inline(__always)
     public func removeAll() {
         self._count = 0
     }
@@ -192,6 +194,7 @@ public final class GPUArray<Element>: MutableCollection,
         )
     }
 
+    @inlinable @inline(__always)
     public var label: String? {
         get {
             self._raw.label

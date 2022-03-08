@@ -95,7 +95,8 @@ internal struct RawGPUArray<Element>: Identifiable {
         self._buffer.setPurgeableState(.empty)
     }
 
-    @inline(__always)
+//    @inline(__always) @inlinable
+    @usableFromInline
     var label: String? {
         get {
             self._buffer.label
