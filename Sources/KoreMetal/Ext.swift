@@ -25,6 +25,12 @@ extension MTLDevice {
     }
 
     @inline(__always)
+    public func makeGPUArray<T, S>(_ seq: S, options: MTLResourceOptions = []) -> GPUArray<T>? where S: Sequence, S.Element == T {
+//        GPUArray(device: self, capacity: capacity, options: options)
+        fatalError()    
+    }
+
+    @inline(__always)
     public func makeGPUUniforms<T>(value: T, options: MTLResourceOptions) -> GPUUniforms<T>? {
         GPUUniforms(device: self, value: value, options: options)
     }

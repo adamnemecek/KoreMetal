@@ -1,5 +1,5 @@
 import Metal
-import Ext
+//import Ext
 
 public final class GPUArray<Element>: MutableCollection,
                                       Identifiable,
@@ -7,12 +7,12 @@ public final class GPUArray<Element>: MutableCollection,
     public typealias Index = Int
 
     public var id: Int {
-        self.raw.id
+        self._raw.id
     }
 
     // how many are actually in used
     public fileprivate(set) var count: Int
-    internal fileprivate(set) var raw: RawGPUArray<Element>
+    internal fileprivate(set) var _raw: RawGPUArray<Element>
 
     public init?(
         device: MTLDevice,
@@ -28,7 +28,7 @@ public final class GPUArray<Element>: MutableCollection,
         ) else { return nil }
 
         self.count = 0
-        self.raw = raw
+        self._raw = raw
     }
 
     public init() {
@@ -41,7 +41,7 @@ public final class GPUArray<Element>: MutableCollection,
             fatalError()
         }
         self.count = 0
-        self.raw = raw
+        self._raw = raw
     }
 
     public init<S>(_ elements: S) where S : Sequence, Element == S.Element {
@@ -53,8 +53,23 @@ public final class GPUArray<Element>: MutableCollection,
         ) else { fatalError() }
 
         self.count = 0
-        self.raw = raw
+        self._raw = raw
         self.append(contentsOf: elements)
+    }
+
+    public init<S>(device: MTLDevice, _ elements: S) where S : Sequence, Element == S.Element {
+        fatalError()
+//        assert(Self.isElementStruct)
+//
+//        guard let raw = RawGPUArray<Element>(
+//            device:
+//            capacity: elements.underestimatedCount,
+//            options: []
+//        ) else { fatalError() }
+//
+//        self.count = 0
+//        self.raw = raw
+//        self.append(contentsOf: elements)
     }
 
     public init(
@@ -68,7 +83,7 @@ public final class GPUArray<Element>: MutableCollection,
         ) else { fatalError() }
 
         self.count = 0
-        self.raw = raw
+        self._raw = raw
         self.append(contentsOf: elements)
     }
 
@@ -80,7 +95,7 @@ public final class GPUArray<Element>: MutableCollection,
 //    }
 
     public var resourceOptions: MTLResourceOptions {
-        self.raw.resourceOptions
+        self._raw.resourceOptions
     }
 
     public func clone() -> Self {
@@ -93,7 +108,7 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     public var capacity: Int {
-        self.raw.capacity
+        self._raw.capacity
     }
 
     public var startIndex: Index {
@@ -108,11 +123,11 @@ public final class GPUArray<Element>: MutableCollection,
     public subscript(index: Index) -> Element {
         get {
             assert(index < self.count)
-            return self.raw.ptr[index]
+            return self._raw._ptr[index]
         }
         set {
             assert(index < self.count)
-            self.raw.ptr[index] = newValue
+            self._raw._ptr[index] = newValue
         }
     }
 
@@ -122,7 +137,7 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     public var device: MTLDevice {
-        self.raw.device
+        self._raw.device
     }
 
     public func reserveCapacity(_ minimumCapacity: Int) {
@@ -132,13 +147,13 @@ public final class GPUArray<Element>: MutableCollection,
         guard var new = RawGPUArray<Element>(
             device: self.device,
             capacity: minimumCapacity,
-            options: self.raw.resourceOptions
+            options: self._raw.resourceOptions
         ) else { fatalError() }
 
         new.label = self.label
-        new.copyMemory(from: self.raw, count: self.count)
-        let old = self.raw
-        self.raw = new
+        new.copyMemory(from: self._raw, count: self.count)
+        let old = self._raw
+        self._raw = new
         old.deinit()
     }
 
@@ -153,7 +168,7 @@ public final class GPUArray<Element>: MutableCollection,
     public func removeAll(
         where shouldBeRemoved: (Element) throws -> Bool
     ) rethrows {
-        self.count = try self.raw.removeAll(
+        self.count = try self._raw.removeAll(
             count: self.count,
             where: shouldBeRemoved
         )
@@ -161,16 +176,16 @@ public final class GPUArray<Element>: MutableCollection,
 
     public var label: String? {
         get {
-            self.raw.label
+            self._raw.label
         }
         set {
-            self.raw.label = newValue
+            self._raw.label = newValue
         }
     }
 
     public func append(_ newElement: Element) {
         self.reserveCapacity(self.count + 1)
-        self.raw[self.count] = newElement
+        self._raw[self.count] = newElement
         self.count += 1
     }
 
@@ -193,7 +208,7 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
     func validate() -> Bool {
-        self.raw.validate()
+        self._raw.validate()
     }
 
     //    public func replaceSubrange<C: Collection>(_ subrange: Range<Index>, with newElements: C) where C.Iterator.Element == Element {
@@ -269,28 +284,28 @@ public final class GPUArray<Element>: MutableCollection,
     //    }
 
     deinit {
-        self.raw.deinit()
+        self._raw.deinit()
     }
 
     @inline(__always)
     public func withUnsafeMTLBuffer<R>(
         _ body: (MTLBuffer) -> R
     ) -> R {
-        self.raw.withUnsafeMTLBuffer(body)
+        self._raw.withUnsafeMTLBuffer(body)
     }
 
     @inline(__always)
     public func withUnsafeBufferPointer<R>(
         _ body: (UnsafeBufferPointer<Element>
     ) throws -> R) rethrows -> R {
-        try self.raw.withUnsafeBufferPointer(body, count: self.count)
+        try self._raw.withUnsafeBufferPointer(body, count: self.count)
     }
 
     @inline(__always)
     public func withUnsafeMutableBufferPointer<R>(
         _ body: (UnsafeMutableBufferPointer<Element>
     ) throws -> R) rethrows -> R {
-        try self.raw.withUnsafeMutableBufferPointer(body, count: self.count)
+        try self._raw.withUnsafeMutableBufferPointer(body, count: self.count)
     }
 }
 
@@ -367,7 +382,7 @@ extension GPUArray: RangeReplaceableCollection {
         let growth = newCount - eraseCount
         self.count = oldCount + growth
 
-        let elements = self.raw.ptr
+        let elements = self._raw._ptr
         let oldTailIndex = subrange.upperBound
         //        let oldTailStart = elements.advanc + oldTailIndex
         let oldTailStart = elements.baseAddress!.advanced(by: oldTailIndex)

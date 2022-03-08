@@ -38,7 +38,7 @@ extension MTLRenderCommandEncoder {
         index: Int
     ) {
         self.setVertexBuffer(
-            array.raw.buffer,
+            array._raw._buffer,
             offset: MemoryLayout<Element>.size * offset,
             index: index
         )
@@ -51,7 +51,7 @@ extension MTLRenderCommandEncoder {
         index: Int
     ) {
         self.setFragmentBuffer(
-            array.raw.buffer,
+            array._raw._buffer,
             offset: MemoryLayout<Element>.size * offset,
             index: index
         )
@@ -83,14 +83,14 @@ extension MTLRenderCommandEncoder {
 }
 
 extension MTLComputeCommandEncoder {
-    @inline(__always)
+    @inline(__always) 
     public func setArray<Element>(
         _ array: GPUArray<Element>,
         offset: Int,
         index: Int
     ) {
         self.setBuffer(
-            array.raw.buffer,
+            array._raw._buffer,
             offset: MemoryLayout<Element>.size * offset,
             index: index
         )

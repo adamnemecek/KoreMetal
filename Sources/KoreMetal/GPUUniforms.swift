@@ -1,6 +1,7 @@
 import Metal
 
 // @propertyWrapper
+
 public class GPUUniforms<Element> {
     internal let buffer: MTLBuffer
     private let memAlign: MemAlign<Element>

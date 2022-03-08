@@ -6,24 +6,26 @@ extension UnsafeMutableBufferPointer: Identifiable {
     }
 }
 
+
+
 //
 // not aware of count and such just capacity
 //
-@usableFromInline
 @frozen
-struct RawGPUArray<Element>: Identifiable {
+@usableFromInline
+internal struct RawGPUArray<Element>: Identifiable {
     typealias Index = Int
 
     @usableFromInline
     var id: Int {
-        self.ptr.id
+        self._ptr.id
     }
 
-    internal private(set) var memAlign: MemAlign<Element>
-    internal private(set) var buffer: MTLBuffer
+    internal var _memalign: MemAlign<Element>
+    internal var _buffer: MTLBuffer
     // we cache the contents pointer since otherwise we'd have to call "contents()"
     // and invoke the cost of a obj-c dispatch
-    internal fileprivate(set) var ptr: UnsafeMutableBufferPointer<Element>
+    internal fileprivate(set) var _ptr: UnsafeMutableBufferPointer<Element>
 
     init?(
         device: MTLDevice,
@@ -37,9 +39,9 @@ struct RawGPUArray<Element>: Identifiable {
             options: options
         ) else { return nil }
 
-        self.memAlign = memAlign
-        self.buffer = buffer
-        self.ptr = buffer.bindMemory(capacity: memAlign.capacity)
+        self._memalign = memAlign
+        self._buffer = buffer
+        self._ptr = buffer.bindMemory(capacity: memAlign.capacity)
     }
 
     init?(
@@ -50,20 +52,32 @@ struct RawGPUArray<Element>: Identifiable {
         self.init(device: device, capacity: capacity, options: options)
     }
 
+
+//    init?<S>(
+//        device: MTLDevice,
+//        _ elements: S,
+//        options: MTLResourceOptions = []
+//    ) where S: Sequence, S.Element == Element {
+//        self.init(device: device, capacity: elements.underestimatedCount, options: options)
+//
+////        self.
+//    }
+
+
     @inline(__always)
     subscript(index: Index) -> Element {
         get {
-            assert(index < self.memAlign.capacity)
-            return self.ptr[index]
+            assert(index < self._memalign.capacity)
+            return self._ptr[index]
         }
         set {
-            assert(index < self.memAlign.capacity)
-            self.ptr[index] = newValue
+            assert(index < self._memalign.capacity)
+            self._ptr[index] = newValue
         }
     }
 
     func validate() -> Bool {
-        self.buffer.length == self.memAlign.byteSize
+        self._buffer.length == self._memalign.byteSize
     }
 
     //    private var id: Int {
@@ -71,32 +85,32 @@ struct RawGPUArray<Element>: Identifiable {
     //    }
 
     func `deinit`() {
-        self.buffer.setPurgeableState(.empty)
+        self._buffer.setPurgeableState(.empty)
     }
 
     @inline(__always)
     var label: String? {
         get {
-            self.buffer.label
+            self._buffer.label
         }
         set {
-            self.buffer.label = newValue
+            self._buffer.label = newValue
         }
     }
 
     @inline(__always)
     var resourceOptions: MTLResourceOptions {
-        self.buffer.resourceOptions
+        self._buffer.resourceOptions
     }
 
     @inline(__always)
     var device: MTLDevice {
-        self.buffer.device
+        self._buffer.device
     }
 
     @inline(__always)
     var capacity: Int {
-        self.memAlign.capacity
+        self._memalign.capacity
     }
 //
 //    /// returns the new count of things
@@ -105,14 +119,14 @@ struct RawGPUArray<Element>: Identifiable {
         count: Int,
         where shouldBeRemoved: (Element) throws -> Bool
     ) rethrows -> Int {
-        try self.ptr[0..<count].halfStablePartition(
+        try self._ptr[0..<count].halfStablePartition(
             isSuffixElement: shouldBeRemoved
         )
     }
 
     @inline(__always)
     func copyMemory(from: RawGPUArray<Element>, count: Int) {
-        self.ptr.copyMemory(from: from.ptr, count: count)
+        self._ptr.copyMemory(from: from._ptr, count: count)
         // todo: do i need this?
         // self.buffer.didModifyRange(0..<count)
     }
@@ -127,7 +141,7 @@ struct RawGPUArray<Element>: Identifiable {
     func withUnsafeMTLBuffer<R>(
         _ body: (MTLBuffer) -> R
     ) -> R {
-        body(self.buffer)
+        body(self._buffer)
     }
 
     ///
@@ -138,7 +152,7 @@ struct RawGPUArray<Element>: Identifiable {
         _ body: (UnsafeBufferPointer<Element>) throws -> R,
         count: Int
     ) rethrows -> R {
-        try body(UnsafeBufferPointer(start: self.ptr.baseAddress!, count: count))
+        try body(UnsafeBufferPointer(start: self._ptr.baseAddress!, count: count))
     }
 
     @inline(__always)
@@ -146,7 +160,7 @@ struct RawGPUArray<Element>: Identifiable {
         _ body: (UnsafeMutableBufferPointer<Element>) throws -> R,
         count: Int
     ) rethrows -> R {
-        try body(UnsafeMutableBufferPointer(start: self.ptr.baseAddress!, count: count))
+        try body(UnsafeMutableBufferPointer(start: self._ptr.baseAddress!, count: count))
     }
 }
 
