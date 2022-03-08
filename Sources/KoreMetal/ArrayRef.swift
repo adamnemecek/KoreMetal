@@ -39,6 +39,7 @@ public final class ArrayRef<Element> : Sequence, MutableCollection, RangeReplace
 
 
 /// this is for perf comparisons
+@_fixed_layout
 public final class InlineArrayRef<Element> : Sequence, MutableCollection, RangeReplaceableCollection {
     @usableFromInline
     var inner: ContiguousArray<Element>
