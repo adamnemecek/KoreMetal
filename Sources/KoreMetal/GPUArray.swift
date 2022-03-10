@@ -33,8 +33,8 @@ public final class GPUArray<Element>: MutableCollection,
         self._count
     }
 
-    @usableFromInline
-    internal var uptime: Uptime
+//    @usableFromInline
+    public private(set) var uptime: Uptime
 
     public init?(
         device: MTLDevice,
