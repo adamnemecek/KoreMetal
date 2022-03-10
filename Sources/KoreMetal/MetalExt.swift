@@ -1,6 +1,18 @@
 import Metal
 
 extension MTLRenderCommandEncoder {
+    @inline(__always) @inlinable
+    public func drawRectangles(count: Int) {
+        self.drawPrimitives(
+            type: .triangleStrip,
+            vertexStart: 0,
+            vertexCount: 4,
+            instanceCount: count
+        )
+    }
+}
+
+extension MTLRenderCommandEncoder {
     // todo: should these be stride as opposed to size?
     @inline(__always) @inlinable
     public func setVertexValue<T>(
