@@ -2,7 +2,7 @@ import Metal
 
 extension MTLRenderCommandEncoder {
     // todo: should these be stride as opposed to size?
-    @inline(__always)
+    @inline(__always) @inlinable
     public func setVertexValue<T>(
         _ value: T,
         index: Int
@@ -15,7 +15,7 @@ extension MTLRenderCommandEncoder {
         )
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func setFragmentValue<T>(
         _ value: T,
         index: Int
@@ -31,7 +31,7 @@ extension MTLRenderCommandEncoder {
     ///
     /// offset is in elements
     ///
-    @inline(__always)
+    @inline(__always) @inlinable
     public func setVertexArray<Element>(
         _ array: GPUArray<Element>,
         offset: Int,
@@ -44,7 +44,7 @@ extension MTLRenderCommandEncoder {
         )
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func setFragmentArray<Element>(
         _ array: GPUArray<Element>,
         offset: Int,
@@ -57,7 +57,7 @@ extension MTLRenderCommandEncoder {
         )
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func setVertexUniforms<Element>(
         _ uniforms: GPUUniforms<Element>,
         index: Int
@@ -69,7 +69,7 @@ extension MTLRenderCommandEncoder {
         )
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func setFragmentUniforms<Element>(
         _ uniforms: GPUUniforms<Element>,
         index: Int
@@ -83,7 +83,7 @@ extension MTLRenderCommandEncoder {
 }
 
 extension MTLComputeCommandEncoder {
-    @inline(__always) 
+    @inline(__always) @inlinable
     public func setArray<Element>(
         _ array: GPUArray<Element>,
         offset: Int,
@@ -96,7 +96,7 @@ extension MTLComputeCommandEncoder {
         )
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func setUniforms<Element>(
         _ uniforms: GPUUniforms<Element>,
         index: Int

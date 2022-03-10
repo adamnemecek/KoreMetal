@@ -3,7 +3,9 @@ import Metal
 // @propertyWrapper
 
 public class GPUUniforms<Element> {
+    @usableFromInline
     internal let buffer: MTLBuffer
+
     private let memAlign: MemAlign<Element>
     private var ptr: UnsafeMutablePointer<Element>
 

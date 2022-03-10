@@ -1,5 +1,5 @@
 import Metal
-//import Ext
+import Ext
 
 @_fixed_layout
 public final class GPUArray<Element>: MutableCollection,
@@ -33,6 +33,9 @@ public final class GPUArray<Element>: MutableCollection,
         self._count
     }
 
+    @usableFromInline
+    internal var uptime: Uptime
+
     public init?(
         device: MTLDevice,
         capacity: Int,
@@ -48,6 +51,7 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
+        self.uptime = Uptime()
     }
 
     public init() {
@@ -61,6 +65,7 @@ public final class GPUArray<Element>: MutableCollection,
         }
         self._count = 0
         self._raw = raw
+        self.uptime = Uptime()
     }
 
     public init<S>(_ elements: S) where S : Sequence, Element == S.Element {
@@ -73,6 +78,8 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
+        self.uptime = Uptime()
+
         self.append(contentsOf: elements)
     }
 
@@ -103,6 +110,8 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
+        self.uptime = Uptime()
+
         self.append(contentsOf: elements)
     }
 
@@ -178,6 +187,8 @@ public final class GPUArray<Element>: MutableCollection,
         let old = self._raw
         self._raw = new
         old.deinit()
+
+        self.uptime = Uptime()
     }
 
     @inlinable @inline(__always)

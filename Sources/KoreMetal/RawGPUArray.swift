@@ -26,6 +26,7 @@ internal struct RawGPUArray<Element>: Identifiable {
     @usableFromInline
     internal var _memalign: MemAlign<Element>
 
+    @usableFromInline
     internal var _buffer: MTLBuffer
 
     @usableFromInline
