@@ -18,9 +18,14 @@ public final class GPUArray<Element>: MutableCollection,
     @usableFromInline
     internal var _raw: RawGPUArray<Element>
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public var isEmpty: Bool {
         self._count == 0
+    }
+
+    @inline(__always) @inlinable
+    public var isSome: Bool {
+        !self.isEmpty
     }
 
     @inline(__always) @inlinable
@@ -369,11 +374,12 @@ extension GPUArray: Equatable where Element: Equatable {
         lhs: GPUArray<Element>,
         rhs: GPUArray<Element>
     ) -> Bool {
-        guard lhs._count == rhs._count else { return false }
-        for i in 0..<lhs._count where lhs[i] != rhs[i] {
-            return false
-        }
-        return true
+        guard lhs.count == rhs.count else { return false }
+        return lhs._raw.eq(rhs._raw, count: lhs.count)
+//        for i in 0 ..< lhs.count where lhs[i] != rhs[i] {
+//            return false
+//        }
+//        return true
     }
 
 }

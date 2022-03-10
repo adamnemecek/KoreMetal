@@ -149,6 +149,26 @@ internal struct RawGPUArray<Element>: Identifiable {
 //        self.ptr
 //        fatalError()
 //    }
+//
+//    mutating func reserveCapacity(_ minimumCapacity: Int) {
+//        // check
+//        let memAlign = MemAlign<Element>(capacity: capacity)
+//
+//        guard let new = self.device.makeBuffer(
+//            memAlign: memAlign,
+//            options: self.resourceOptions
+//        ) else { fatalError() }
+//
+//
+//        new.label = self.label
+//        let newPtr: UnsafeMutableBufferPointer<Element> = new.bindMemory(capacity: capacity)
+//
+//        newPtr.copyMemory(from: self._ptr, count: <#T##Int#>)
+//        self._memalign = memAlign
+//        self._buffer = buffer
+//        self._ptr = buffer.bindMemory(capacity: memAlign.capacity)
+//    }
+
 
     func withUnsafeMTLBuffer<R>(
         _ body: (MTLBuffer) -> R
@@ -188,6 +208,13 @@ internal struct RawGPUArray<Element>: Identifiable {
 //    }
 // }
 
+extension RawGPUArray where Element: Equatable {
+    @inline(__always) @inlinable
+    func eq(_ other: Self, count: Int) -> Bool {
+        self._ptr.eq(other._ptr, count: count)
+    }
+}
+
 extension UnsafeMutableBufferPointer {
     ///
     /// this is ok since `gpuarray` won't contain classes but only `structs`
@@ -198,5 +225,24 @@ extension UnsafeMutableBufferPointer {
         guard let from = from.baseAddress else { fatalError("from was nil") }
 
         to.assign(from: from, count: count)
+    }
+}
+
+
+extension UnsafeMutableBufferPointer where Element: Equatable {
+    @inline(__always) @inlinable
+    func eq(_ other: UnsafeMutableBufferPointer, count: Int) -> Bool {
+        guard var i = self.baseAddress,
+              var j = other.baseAddress else { fatalError() }
+
+        for _ in 0 ..< count {
+            if i.pointee != j.pointee {
+                return false
+            }
+            i = i.successor()
+            j = j.successor()
+        }
+
+        return true
     }
 }
