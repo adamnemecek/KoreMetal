@@ -115,6 +115,25 @@ public final class GPUArray<Element>: MutableCollection,
         self.append(contentsOf: elements)
     }
 
+    public init(
+        device: MTLDevice,
+        repeating repeatedValue: Element,
+        count: Int
+    ) {
+        assert(Self.isElementStruct)
+
+        guard let raw = RawGPUArray<Element>(
+            capacity: count,
+            options: []
+        ) else { fatalError() }
+
+        self._count = 0
+        self._raw = raw
+        self.uptime = Uptime()
+
+        self.append(contentsOf: repeatElement(repeatedValue, count: count))
+    }
+
     ///
     /// takes the ownership of a buffer
     ///
@@ -487,3 +506,11 @@ extension GPUArray: RangeReplaceableCollection {
     }
 }
 
+extension GPUArray where Element: ExpressibleByIntegerLiteral {
+    public convenience init(device: MTLDevice, count: Int) {
+        self.init(device: device, repeating: 0, count: count)
+    }
+}
+
+
+//extension GPUArray where Element: ExpressibleByIntegerLiteral {
