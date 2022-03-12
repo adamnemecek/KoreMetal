@@ -171,6 +171,7 @@ internal struct RawGPUArray<Element>: Identifiable {
 //    }
 
 
+    @inline(__always) @inlinable
     func withUnsafeMTLBuffer<R>(
         _ body: (MTLBuffer) -> R
     ) -> R {

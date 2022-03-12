@@ -1,5 +1,5 @@
 
-/// this is for perf comparisons
+/// this is for perf testing
 public final class ArrayRef<Element> : Sequence, MutableCollection, RangeReplaceableCollection {
     var inner: ContiguousArray<Element>
 

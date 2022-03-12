@@ -239,6 +239,7 @@ public final class GPUArray<Element>: MutableCollection,
         }
     }
 
+    @inline(__always) @inlinable
     public func append(_ newElement: Element) {
         self.reserveCapacity(self._count + 1)
         self._raw[self._count] = newElement
@@ -345,21 +346,21 @@ public final class GPUArray<Element>: MutableCollection,
         self._raw.deinit()
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func withUnsafeMTLBuffer<R>(
         _ body: (MTLBuffer) -> R
     ) -> R {
         self._raw.withUnsafeMTLBuffer(body)
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func withUnsafeBufferPointer<R>(
         _ body: (UnsafeBufferPointer<Element>
     ) throws -> R) rethrows -> R {
         try self._raw.withUnsafeBufferPointer(body, count: self._count)
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     public func withUnsafeMutableBufferPointer<R>(
         _ body: (UnsafeMutableBufferPointer<Element>
     ) throws -> R) rethrows -> R {
@@ -375,7 +376,7 @@ extension GPUArray: CustomStringConvertible where Element: CustomStringConvertib
 }
 
 extension GPUArray: BidirectionalCollection {
-    @inline(__always)
+    @inline(__always) @inlinable
     public func index(before i: Index) -> Index {
         return i - 1
     }
