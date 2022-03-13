@@ -126,20 +126,20 @@ extension MTLComputeCommandEncoder {
 ///
 
 extension MTLDevice {
-    @inline(__always)
+    @inline(__always) @inlinable
     func makeBuffer<T>(memAlign: MemAlign<T>, options: MTLResourceOptions = []) -> MTLBuffer? {
         self.makeBuffer(length: memAlign.byteSize, options: options)
     }
 }
 
 extension MTLBuffer {
-    @inline(__always)
+    @inline(__always) @inlinable
     func bindMemory<Element>(capacity: Int) -> UnsafeMutableBufferPointer<Element> {
         let start = self.contents().bindMemory(to: Element.self, capacity: capacity)
         return .init(start: start, count: capacity)
     }
 
-    @inline(__always)
+    @inline(__always) @inlinable
     func bindUniformMemory<Element>() -> UnsafeMutablePointer<Element> {
         let start = self.contents().bindMemory(to: Element.self, capacity: 1)
         return UnsafeMutablePointer(start)

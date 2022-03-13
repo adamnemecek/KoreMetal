@@ -246,6 +246,7 @@ public final class GPUArray<Element>: MutableCollection,
         self._count += 1
     }
 
+    @inline(__always) @inlinable
     public func append<S>(contentsOf newElements: S) where Element == S.Element, S: Sequence {
         self.reserveCapacity(self._count + newElements.underestimatedCount)
 
