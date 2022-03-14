@@ -138,32 +138,6 @@ extension MTLComputeCommandEncoder {
 }
 
 extension MTLIndirectRenderCommand {
-//    @inline(__always) @inlinable
-//    public func setVertexValue<T>(
-//        _ value: T,
-//        index: Int
-//    ) {
-//        var value = value
-//        self.setVertexBytes(
-//            &value,
-//            length: MemoryLayout<T>.size,
-//            index: index
-//        )
-//    }
-//
-//    @inline(__always) @inlinable
-//    public func setFragmentValue<T>(
-//        _ value: T,
-//        index: Int
-//    ) {
-//        var value = value
-//        self.setFragmentBytes(
-//            &value,
-//            length: MemoryLayout<T>.size,
-//            index: index
-//        )
-//    }
-
     ///
     /// offset is in elements
     ///
