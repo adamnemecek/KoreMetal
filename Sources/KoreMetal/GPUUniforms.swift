@@ -23,6 +23,7 @@ public class GPUUniforms<Element> {
         self.buffer = buffer
         self.ptr = buffer.bindUniformMemory()
         self.memAlign = memAlign
+        self.wrappedValue = value
     }
 
     public var wrappedValue: Element {
