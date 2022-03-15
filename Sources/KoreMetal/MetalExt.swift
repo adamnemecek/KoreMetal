@@ -1,5 +1,12 @@
 import Metal
 
+extension MTLSize {
+    @inline(__always) @inlinable
+    public init(width: Int) {
+        self.init(width: width, height: 1, depth: 1)
+    }
+}
+
 extension MTLRenderCommandEncoder {
     @inline(__always) @inlinable
     public func drawRectangles(instanceCount: Int) {
@@ -135,6 +142,19 @@ extension MTLComputeCommandEncoder {
             index: index
         )
     }
+
+    @inline(__always) @inlinable
+    public func setValue<T>(
+        _ value: T,
+        index: Int
+    ) {
+        var value = value
+        self.setBytes(
+            &value,
+            length: MemoryLayout<T>.size,
+            index: index
+        )
+    }
 }
 
 extension MTLIndirectRenderCommand {
@@ -215,4 +235,9 @@ extension MTLBuffer {
         let start = self.contents().bindMemory(to: Element.self, capacity: 1)
         return UnsafeMutablePointer(start)
     }
+}
+
+/// these are for figuring out good sizes for 1d arrays
+extension MTLSize {
+    //
 }

@@ -54,6 +54,15 @@ internal struct RawGPUArray<Element>: Identifiable {
         self._ptr = buffer.bindMemory(capacity: memAlign.capacity)
     }
 
+//    init?(
+//        device: MTLDevice,
+//        ptr: UnsafeBufferPointer<Element>,
+//        options: MTLResourceOptions = []
+//    ) {
+//        device.makeBuffer(bytes: ptr.baseAddress!, length: 10, options: options)
+//        fatalError()
+//    }
+
     init?(
         capacity: Int,
         options: MTLResourceOptions = []

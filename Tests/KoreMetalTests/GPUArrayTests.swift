@@ -139,6 +139,11 @@ class GPUArrayTest: XCTestCase {
     }
 
 
+    func testAddArrays() {
+        let a = GPUArray<Int>(0..<10)
+        let b = GPUArray<Int>(0..<10)
+    }
+
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
