@@ -2,16 +2,19 @@
 import Foundation
 import Metal
 
-final class Device {
-    let device: MTLDevice
+public final class Device {
+    public let device: MTLDevice
+    public private(set) var count: Int
 
     private init(device: MTLDevice) {
+//        self.d
         fatalError()
     }
 
     static let `default` = Device(device: MTLCreateSystemDefaultDevice()!)
 
-    public private(set) var counter: Int
+//    static var current =
+
 
     func makeBuffer() {
 

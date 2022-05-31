@@ -3,7 +3,7 @@ import Ext
 
 // @propertyWrapper
 
-public class GPUUniforms<Element> {
+public final class GPUUniforms<Element> {
     @usableFromInline
     internal let buffer: MTLBuffer
 
@@ -28,6 +28,23 @@ public class GPUUniforms<Element> {
         self.wrappedValue = value
     }
 
+    public init?(
+        device: MTLDevice,
+        options: MTLResourceOptions = []
+    ) {
+        assert(TypeKind<Element>.isStruct)
+        let memAlign = MemAlign<Element>(capacity: 1)
+        guard let buffer = device.makeBuffer(
+            memAlign: memAlign,
+            options: options
+        ) else { return nil }
+
+        self.buffer = buffer
+        self.ptr = buffer.bindUniformMemory()
+        self.memAlign = memAlign
+    }
+
+
     public var wrappedValue: Element {
         get {
             self.ptr.pointee
@@ -38,7 +55,7 @@ public class GPUUniforms<Element> {
     }
 
     @inline(__always)
-    var label: String? {
+    public var label: String? {
         get {
             self.buffer.label
         }
@@ -48,12 +65,12 @@ public class GPUUniforms<Element> {
     }
 
     @inline(__always)
-    var resourceOptions: MTLResourceOptions {
+    public var resourceOptions: MTLResourceOptions {
         self.buffer.resourceOptions
     }
 
     @inline(__always)
-    var device: MTLDevice {
+    public var device: MTLDevice {
         self.buffer.device
     }
 
