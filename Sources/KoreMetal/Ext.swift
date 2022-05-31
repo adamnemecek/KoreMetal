@@ -14,10 +14,6 @@ extension Identifiable {
 }
 
 extension MTLDevice {
-//    @inline(__always)
-//    public static var `default`: MTLDevice? {
-//        MTLCreateSystemDefaultDevice()
-//    }
 
     @inline(__always)
     public func makeGPUArray<T>(capacity: Int, options: MTLResourceOptions = []) -> GPUArray<T>? {

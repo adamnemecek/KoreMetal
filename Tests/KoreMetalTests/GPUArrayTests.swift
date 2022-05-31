@@ -53,6 +53,20 @@ class GPUArrayTest: XCTestCase {
 
         XCTAssert(z == [10, 20, 30])
     }
+
+    func testObserver() {
+        let device = MTLCreateSystemDefaultDevice()!
+        guard let a = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
+
+        guard let b = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
+
+//        let z = a.objectWillChange.sink { v in
+//            print("realloc")
+//        }
+
+        a.append(contentsOf: 0..<1000)
+        print(a.capacity)
+    }
     
     func testAppendMultiple() {
         let device = MTLCreateSystemDefaultDevice()!

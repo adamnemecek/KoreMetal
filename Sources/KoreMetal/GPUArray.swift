@@ -1,10 +1,27 @@
 import Metal
 import Ext
+import Combine
+
+//class Wrapper : ObservableObject {
+//    var inner: GPUArray<Int>
+//
+//
+//    public var objectWillChange: ObservableObjectPublisher {
+//        print("objectwill change")
+//
+////        return self.inner.objectWillChange
+//    }
+//    init() {
+//        fatalError()
+//    }
+//}
 
 @_fixed_layout
 public final class GPUArray<Element>: MutableCollection,
                                       Identifiable,
-                                      ExpressibleByArrayLiteral {
+                                      ExpressibleByArrayLiteral
+//                                      ObservableObject
+{
     public typealias Index = Int
 
     public var id: Int {
@@ -208,6 +225,13 @@ public final class GPUArray<Element>: MutableCollection,
         old.deinit()
 
         self.uptime = Uptime()
+
+//        self.objectWillChange.send()
+//        AllocationCounter.shared.increment()
+    }
+
+    public func shrink(factor: Int) {
+        fatalError()
     }
 
     @inlinable @inline(__always)

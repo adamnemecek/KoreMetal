@@ -1,4 +1,5 @@
 import Metal
+import Ext
 
 extension MTLSize {
     @inline(__always) @inlinable
@@ -42,6 +43,7 @@ extension MTLRenderCommandEncoder {
         _ value: T,
         index: Int
     ) {
+        assert(TypeKind<T>.isStruct)
         var value = value
         self.setVertexBytes(
             &value,
@@ -55,6 +57,7 @@ extension MTLRenderCommandEncoder {
         _ value: T,
         index: Int
     ) {
+        assert(TypeKind<T>.isStruct)
         var value = value
         self.setFragmentBytes(
             &value,

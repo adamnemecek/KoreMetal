@@ -1,4 +1,5 @@
 import Metal
+import Ext
 
 // @propertyWrapper
 
@@ -14,6 +15,7 @@ public class GPUUniforms<Element> {
         value: Element,
         options: MTLResourceOptions = []
     ) {
+        assert(TypeKind<Element>.isStruct)
         let memAlign = MemAlign<Element>(capacity: 1)
         guard let buffer = device.makeBuffer(
             memAlign: memAlign,
