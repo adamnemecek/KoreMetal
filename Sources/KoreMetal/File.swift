@@ -9,17 +9,15 @@
 //import Combine
 //
 //
-//public final class AllocationCounter  {
-//    private(set) var counter: Int
-//    static let shared = AllocationCounter()
-////    var set: Set<ObservableObjectPublisher>
-//
-//    private init() {
-//        counter = 0
-////        self.set = []
-//    }
-//
-//    internal func increment() {
-//        counter += 1
-//    }
-//}
+public final class AllocationCounter  {
+    public private(set) var counter: Int
+    public static let shared = AllocationCounter()
+
+    private init() {
+        counter = 0
+    }
+
+     func increment() {
+        counter += 1
+    }
+}

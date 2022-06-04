@@ -52,6 +52,7 @@ internal struct RawGPUArray<Element>: Identifiable {
         self._memalign = memAlign
         self._buffer = buffer
         self._ptr = buffer.bindMemory(capacity: memAlign.capacity)
+
     }
 
 //    init?(

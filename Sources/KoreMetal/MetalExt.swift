@@ -4,7 +4,8 @@ import Ext
 extension MTLSize {
     @inline(__always) @inlinable
     public init(width: Int) {
-        self.init(width: width, height: 1, depth: 1)
+//        self.init(width: width, height: 1, depth: 1)
+        fatalError()
     }
 }
 
@@ -222,7 +223,8 @@ extension MTLIndirectRenderCommand {
 extension MTLDevice {
     @inline(__always) @inlinable
     func makeBuffer<T>(memAlign: MemAlign<T>, options: MTLResourceOptions = []) -> MTLBuffer? {
-        self.makeBuffer(length: memAlign.byteSize, options: options)
+//        AllocationCounter.shared.increment()
+        return self.makeBuffer(length: memAlign.byteSize, options: options)
     }
 }
 

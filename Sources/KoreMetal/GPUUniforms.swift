@@ -16,6 +16,7 @@ public final class GPUUniforms<Element> {
         options: MTLResourceOptions = []
     ) {
         assert(TypeKind<Element>.isStruct)
+
         let memAlign = MemAlign<Element>(capacity: 1)
         guard let buffer = device.makeBuffer(
             memAlign: memAlign,
@@ -33,6 +34,7 @@ public final class GPUUniforms<Element> {
         options: MTLResourceOptions = []
     ) {
         assert(TypeKind<Element>.isStruct)
+
         let memAlign = MemAlign<Element>(capacity: 1)
         guard let buffer = device.makeBuffer(
             memAlign: memAlign,
