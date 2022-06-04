@@ -58,7 +58,7 @@ class GPUArrayTest: XCTestCase {
         let device = MTLCreateSystemDefaultDevice()!
         guard let a = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
 
-        guard let b = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
+//        guard let b = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
 
 //        let z = a.objectWillChange.sink { v in
 //            print("realloc")
