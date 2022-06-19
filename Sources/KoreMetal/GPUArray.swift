@@ -151,6 +151,7 @@ public final class GPUArray<Element>: MutableCollection,
         self.append(contentsOf: repeatElement(repeatedValue, count: count))
     }
 
+
     ///
     /// takes the ownership of a buffer
     ///
@@ -278,6 +279,23 @@ public final class GPUArray<Element>: MutableCollection,
             self.append(e)
         }
     }
+
+//
+//    @inline(__always) @inlinable
+//    public func appendFast<C>(
+//        contentsOf newElements: C
+//    ) where Element == C.Element, C: Collection {
+//        self.reserveCapacity(self._count + newElements.count)
+//
+//        var count = self._count
+//
+//        for e in newElements {
+//            self._raw[count] = e
+//            count += 1
+//        }
+//
+//        self._count = count
+//    }
 
     @inlinable @inline(__always)
     public var first: Element? {
@@ -540,3 +558,6 @@ extension GPUArray where Element: ExpressibleByIntegerLiteral {
 
 
 //extension GPUArray where Element: ExpressibleByIntegerLiteral {
+
+
+

@@ -58,11 +58,11 @@ class GPUArrayTest: XCTestCase {
         let device = MTLCreateSystemDefaultDevice()!
         guard let a = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
 
-//        guard let b = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
+        //        guard let b = GPUArray<Int>(device: device, capacity: 10) else { fatalError() }
 
-//        let z = a.objectWillChange.sink { v in
-//            print("realloc")
-//        }
+        //        let z = a.objectWillChange.sink { v in
+        //            print("realloc")
+        //        }
 
         a.append(contentsOf: 0..<1000)
         print(a.capacity)
@@ -74,14 +74,14 @@ class GPUArrayTest: XCTestCase {
         let v = Array(0..<10000)
         //
         guard var a = GPUArray<Int>(device: device, capacity: 1) else { fatalError() }
-//        print(a.id)
+        //        print(a.id)
         let idChanged = a.observeID {
             $0.append(contentsOf: v)
         }
 
-//        print(a.id)
+        //        print(a.id)
         print(idChanged)
-//        print(a.count)
+        //        print(a.count)
         XCTAssert(v.count == a.count)
         XCTAssertEqual(v.sum(),  a.sum())
         //
@@ -122,23 +122,56 @@ class GPUArrayTest: XCTestCase {
         XCTAssert(a.elementsEqual([2, 1, 3]))
     }
 
+    func testPerf() {
+        let device = MTLCreateSystemDefaultDevice()!
+        let count = 3000
+        let a = GPUArray<Int>(device: device, capacity: count)!
+
+        for _ in 0..<5 {
+            a.removeAll(keepingCapacity: true)
+            let start = CACurrentMediaTime()
+
+            a.append(contentsOf: 0..<count)
+
+            let end = CACurrentMediaTime()
+
+            print("\(end - start)")
+        }
+    }
+
+    func testPerf1() {
+
+        var a = ContiguousArray<Int>(capacity: 30000)
+
+        for _ in 0..<5 {
+            a.removeAll(keepingCapacity: true)
+            let start = CACurrentMediaTime()
+
+            a.append(contentsOf: 0..<30000)
+
+            let end = CACurrentMediaTime()
+
+            print("\(end - start)")
+        }
+    }
+
     func testBoolArray() {
-//        let device = MTLCreateSystemDefaultDevice()!
-//
-//        guard var a = GPUArray<Bool>(device: device, capacity: 16) else { fatalError() }
-//
-//        a.append(contentsOf: repeatElement(false, count: 16))
-//
-//        a[5] = true
-//        a[10] = true
-//        a[15] = true
-//
-////        for e in a.enumerated() {
-////            print(e)
-////        }
-////        for e in a.iterSetBits() {
-////            print(e)
-////        }
+        //        let device = MTLCreateSystemDefaultDevice()!
+        //
+        //        guard var a = GPUArray<Bool>(device: device, capacity: 16) else { fatalError() }
+        //
+        //        a.append(contentsOf: repeatElement(false, count: 16))
+        //
+        //        a[5] = true
+        //        a[10] = true
+        //        a[15] = true
+        //
+        ////        for e in a.enumerated() {
+        ////            print(e)
+        ////        }
+        ////        for e in a.iterSetBits() {
+        ////            print(e)
+        ////        }
     }
 
     func testEq() {
@@ -149,7 +182,7 @@ class GPUArrayTest: XCTestCase {
 
         XCTAssert(a == b)
         XCTAssert(a != c)
-//        XCTAssert(1 != 10)
+        //        XCTAssert(1 != 10)
     }
 
 

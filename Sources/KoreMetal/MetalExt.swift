@@ -246,3 +246,21 @@ extension MTLBuffer {
 extension MTLSize {
     //
 }
+
+extension MTLPurgeableState : CustomStringConvertible {
+    @inlinable @inline(__always)
+    public var description: String {
+        switch self {
+            case .keepCurrent:
+                return "MTLPurgeableState.keepCurrent"
+            case .nonVolatile:
+                return "MTLPurgeableState.nonVolatile"
+            case .volatile:
+                return "MTLPurgeableState.volatile"
+            case .empty:
+                return "MTLPurgeableState.empty"
+            @unknown default:
+                return "MTLPurgeableState.unknown"
+        }
+    }
+}

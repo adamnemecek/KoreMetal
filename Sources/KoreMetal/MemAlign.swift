@@ -30,19 +30,15 @@ import Ext
 // }
 
 @frozen
-@usableFromInline
-internal struct MemAlign<T> {
+public struct MemAlign<T> {
     // the total byte size
-    @usableFromInline
-    let byteSize: Int
+    public let byteSize: Int
 
     // how many elements of T are there
-    @usableFromInline
-    let capacity: Int
+    public let capacity: Int
 
     // remaining bytes
-    @usableFromInline
-    let remainder: Int
+    public let remainder: Int
 }
 
 extension MemAlign {

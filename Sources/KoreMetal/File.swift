@@ -1,9 +1,3 @@
-////
-////  File.swift
-////  
-////
-////  Created by Adam Nemecek on 5/20/22.
-////
 //
 //import Foundation
 //import Combine
