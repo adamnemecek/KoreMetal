@@ -105,13 +105,6 @@ internal struct RawGPUArray<Element>: Identifiable {
     //    }
 
     func `deinit`() {
-        let state = self._buffer.setPurgeableState(.keepCurrent)
-        if state == .nonVolatile {
-            print("RawGPUArray.deinit state \(state)")
-        } else {
-            print("RawGPUArray.deinit state \(state)")
-        }
-
         self._buffer.setPurgeableState(.empty)
     }
 
