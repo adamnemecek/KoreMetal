@@ -51,7 +51,7 @@ public final class GPUArray<Element>: MutableCollection,
     }
 
 //    @usableFromInline
-    public private(set) var uptime: Uptime
+//    public private(set) var uptime: Uptime
 
     public init?(
         device: MTLDevice,
@@ -68,7 +68,7 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
-        self.uptime = Uptime()
+//        self.uptime = Uptime()
     }
 
     public init() {
@@ -82,7 +82,7 @@ public final class GPUArray<Element>: MutableCollection,
         }
         self._count = 0
         self._raw = raw
-        self.uptime = Uptime()
+//        self.uptime = Uptime()
     }
 
     public init<S>(_ elements: S) where S : Sequence, Element == S.Element {
@@ -95,7 +95,7 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
-        self.uptime = Uptime()
+//        self.uptime = Uptime()
 
         self.append(contentsOf: elements)
     }
@@ -127,7 +127,7 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
-        self.uptime = Uptime()
+//        self.uptime = Uptime()
 
         self.append(contentsOf: elements)
     }
@@ -146,7 +146,7 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
-        self.uptime = Uptime()
+//        self.uptime = Uptime()
 
         self.append(contentsOf: repeatElement(repeatedValue, count: count))
     }
@@ -190,11 +190,11 @@ public final class GPUArray<Element>: MutableCollection,
     @inline(__always) @inlinable
     public subscript(index: Index) -> Element {
         get {
-            assert(index < self._count)
+            assert(index < self._count, "Index (\(index)) out of range (count: \(self._count))")
             return self._raw._ptr[index]
         }
         set {
-            assert(index < self._count)
+            assert(index < self._count, "Index (\(index)) out of range (count: \(self._count))")
             self._raw._ptr[index] = newValue
         }
     }
@@ -225,7 +225,7 @@ public final class GPUArray<Element>: MutableCollection,
         self._raw = new
         old.deinit()
 
-        self.uptime = Uptime()
+//        self.uptime = Uptime()
 
 //        self.objectWillChange.send()
 //        AllocationCounter.shared.increment()
