@@ -34,9 +34,6 @@ public final class GPUArray<Element>: MutableCollection,
         self._count
     }
 
-//    @usableFromInline
-//    public private(set) var uptime: Uptime
-
     public init?(
         device: MTLDevice,
         capacity: Int,
@@ -52,7 +49,6 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
-//        self.uptime = Uptime()
     }
 
     public init() {
@@ -79,7 +75,6 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
-//        self.uptime = Uptime()
 
         self.append(contentsOf: elements)
     }
@@ -88,7 +83,7 @@ public final class GPUArray<Element>: MutableCollection,
         device: MTLDevice,
         _ elements: S,
         options: MTLResourceOptions = []
-    ) where S : Sequence, Element == S.Element {
+    ) where S: Sequence, Element == S.Element {
         assert(Self.isElementStruct)
 
         guard let raw = RawGPUArray<Element>(
@@ -114,7 +109,6 @@ public final class GPUArray<Element>: MutableCollection,
 
         self._count = 0
         self._raw = raw
-//        self.uptime = Uptime()
 
         self.append(contentsOf: elements)
     }
@@ -122,18 +116,18 @@ public final class GPUArray<Element>: MutableCollection,
     public init(
         device: MTLDevice,
         repeating repeatedValue: Element,
-        count: Int
+        count: Int,
+        options: MTLResourceOptions = []
     ) {
         assert(Self.isElementStruct)
 
         guard let raw = RawGPUArray<Element>(
             capacity: count,
-            options: []
+            options: options
         ) else { fatalError() }
 
         self._count = 0
         self._raw = raw
-//        self.uptime = Uptime()
 
         self.append(contentsOf: repeatElement(repeatedValue, count: count))
     }
