@@ -73,15 +73,17 @@ internal struct RawGPUArray<Element>: Identifiable {
     }
 
 
-//    init?<S>(
-//        device: MTLDevice,
-//        _ elements: S,
-//        options: MTLResourceOptions = []
-//    ) where S: Sequence, S.Element == Element {
-//        self.init(device: device, capacity: elements.underestimatedCount, options: options)
-//
-////        self.
-//    }
+    init?<S>(
+        device: MTLDevice,
+        _ elements: S,
+        options: MTLResourceOptions = []
+    ) where S: Sequence, S.Element == Element {
+        self.init(
+            device: device,
+            capacity: elements.underestimatedCount,
+            options: options
+        )
+    }
 
 
     @inline(__always) @inlinable

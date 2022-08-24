@@ -1,27 +1,11 @@
 import Metal
 import Ext
-import Combine
-
-//class Wrapper : ObservableObject {
-//    var inner: GPUArray<Int>
-//
-//
-//    public var objectWillChange: ObservableObjectPublisher {
-//        print("objectwill change")
-//
-////        return self.inner.objectWillChange
-//    }
-//    init() {
-//        fatalError()
-//    }
-//}
+//import Combine
 
 @_fixed_layout
 public final class GPUArray<Element>: MutableCollection,
                                       Identifiable,
-                                      ExpressibleByArrayLiteral
-//                                      ObservableObject
-{
+                                      ExpressibleByArrayLiteral {
     public typealias Index = Int
 
     public var id: Int {
@@ -100,19 +84,22 @@ public final class GPUArray<Element>: MutableCollection,
         self.append(contentsOf: elements)
     }
 
-    public init<S>(device: MTLDevice, _ elements: S) where S : Sequence, Element == S.Element {
-        fatalError()
-//        assert(Self.isElementStruct)
-//
-//        guard let raw = RawGPUArray<Element>(
-//            device:
-//            capacity: elements.underestimatedCount,
-//            options: []
-//        ) else { fatalError() }
-//
-//        self._count = 0
-//        self.raw = raw
-//        self.append(contentsOf: elements)
+    public init<S>(
+        device: MTLDevice,
+        _ elements: S,
+        options: MTLResourceOptions = []
+    ) where S : Sequence, Element == S.Element {
+        assert(Self.isElementStruct)
+
+        guard let raw = RawGPUArray<Element>(
+            device: device,
+            capacity: elements.underestimatedCount,
+            options: options
+        ) else { fatalError() }
+
+        self._count = 0
+        self._raw = raw
+        self.append(contentsOf: elements)
     }
 
     public init(
