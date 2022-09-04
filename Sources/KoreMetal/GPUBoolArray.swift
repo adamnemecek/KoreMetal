@@ -1,7 +1,7 @@
 import MetalKit
 import Ext
 
-let BITSIZE = MemoryLayout<UInt64>.bitSize
+//let BITSIZE = MemoryLayout<UInt64>.bitSize
 
 public final class GPUBitArray {
     private var inner: GPUArray<UInt64>
