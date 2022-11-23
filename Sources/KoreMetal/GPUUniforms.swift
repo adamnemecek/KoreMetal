@@ -77,7 +77,7 @@ public final class GPUUniforms<Element> {
     }
 
     deinit {
-        self.buffer.setPurgeableState(.empty)
+//        self.buffer.setPurgeableState(.empty)
     }
 
 }

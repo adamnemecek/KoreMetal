@@ -107,7 +107,7 @@ internal struct RawGPUArray<Element>: Identifiable {
     //    }
 
     func `deinit`() {
-        self._buffer.setPurgeableState(.empty)
+//        self._buffer.setPurgeableState(.empty)
     }
 
 //    @inline(__always) @inlinable
