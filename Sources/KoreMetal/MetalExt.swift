@@ -38,6 +38,10 @@ extension MTLIndirectRenderCommand {
 }
 
 extension MTLRenderCommandEncoder {
+    
+}
+
+extension MTLRenderCommandEncoder {
     // todo: should these be stride as opposed to size?
     @inline(__always) @inlinable
     public func setVertexValue<T>(
@@ -73,7 +77,7 @@ extension MTLRenderCommandEncoder {
     @inline(__always) @inlinable
     public func setVertexArray<Element>(
         _ array: GPUArray<Element>,
-        offset: Int = 0,
+        offset: Int,
         index: Int
     ) {
         self.setVertexBuffer(
@@ -86,7 +90,7 @@ extension MTLRenderCommandEncoder {
     @inline(__always) @inlinable
     public func setFragmentArray<Element>(
         _ array: GPUArray<Element>,
-        offset: Int = 0,
+        offset: Int,
         index: Int
     ) {
         self.setFragmentBuffer(
@@ -125,7 +129,17 @@ extension MTLComputeCommandEncoder {
     @inline(__always) @inlinable
     public func setArray<Element>(
         _ array: GPUArray<Element>,
-        offset: Int = 0,
+        index: Int
+    ) {
+        self.setArray(array, offset: 0, index: index)
+    }
+}
+
+extension MTLComputeCommandEncoder {
+    @inline(__always) @inlinable
+    public func setArray<Element>(
+        _ array: GPUArray<Element>,
+        offset: Int,
         index: Int
     ) {
         self.setBuffer(
@@ -168,7 +182,7 @@ extension MTLIndirectRenderCommand {
     @inline(__always) @inlinable
     public func setVertexArray<Element>(
         _ array: GPUArray<Element>,
-        offset: Int = 0,
+        offset: Int,
         at index: Int
     ) {
         self.setVertexBuffer(
@@ -181,7 +195,7 @@ extension MTLIndirectRenderCommand {
     @inline(__always) @inlinable
     public func setFragmentArray<Element>(
         _ array: GPUArray<Element>,
-        offset: Int = 0,
+        offset: Int,
         at index: Int
     ) {
         self.setFragmentBuffer(
@@ -213,6 +227,24 @@ extension MTLIndirectRenderCommand {
             offset: 0,
             at: index
         )
+    }
+}
+
+extension MTLIndirectRenderCommand {
+    @inline(__always) @inlinable
+    public func setVertexArray<Element>(
+        _ array: GPUArray<Element>,
+        at index: Int
+    ) {
+        self.setVertexArray(array, offset: 0, at: index)
+    }
+
+    @inline(__always) @inlinable
+    public func setFragmentArray<Element>(
+        _ array: GPUArray<Element>,
+        at index: Int
+    ) {
+        self.setFragmentArray(array, offset: 0, at: index)
     }
 }
 
