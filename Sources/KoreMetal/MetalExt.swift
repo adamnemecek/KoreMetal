@@ -279,7 +279,9 @@ extension MTLSize {
     //
 }
 
-extension MTLPurgeableState : CustomStringConvertible {
+extension MTLPurgeableState : CaseIterable, CustomStringConvertible {
+    public static var allCases: [Self] = [.keepCurrent, .nonVolatile, .volatile, .empty]
+
     @inlinable @inline(__always)
     public var description: String {
         switch self {

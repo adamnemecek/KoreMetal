@@ -8,10 +8,10 @@ public final class AllocationCounter  {
     public static let shared = AllocationCounter()
 
     private init() {
-        counter = 0
+        self.counter = 0
     }
 
      func increment() {
-        counter += 1
+         self.counter += 1
     }
 }

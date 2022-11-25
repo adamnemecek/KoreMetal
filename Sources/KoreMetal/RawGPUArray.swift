@@ -245,7 +245,7 @@ extension UnsafeMutableBufferPointer {
 
 extension UnsafeMutableBufferPointer where Element: Equatable {
     @inline(__always) @inlinable
-    func eq(_ other: UnsafeMutableBufferPointer, count: Int) -> Bool {
+    func eq(_ other: Self, count: Int) -> Bool {
         guard var i = self.baseAddress,
               var j = other.baseAddress else { fatalError() }
 

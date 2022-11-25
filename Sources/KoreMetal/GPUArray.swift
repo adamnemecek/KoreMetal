@@ -395,7 +395,7 @@ public final class GPUArray<Element>: MutableCollection,
 extension GPUArray: CustomStringConvertible where Element: CustomStringConvertible {
     public var description: String {
         let inner = self.map { $0.description }.joined(separator: ", ")
-        return "GPUArray<\(Element.self)>(\(inner))"
+        return "\(Self.self)(\(inner))"
     }
 }
 
